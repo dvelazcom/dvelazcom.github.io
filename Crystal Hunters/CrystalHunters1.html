@@ -1,0 +1,874 @@
+<html><meta content="text/html;charset=utf-8" http-equiv="Content-Type"><meta content="utf-8" http-equiv="encoding"><meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=no"/><head><title>CrystalHunters1 | mokuro</title><style>:root {
+    --textBoxDisplay: initial;
+    --textBoxBorderHoverColor: rgba(237, 28, 36, 0.5);
+    --textBoxFontSize: 1em;
+
+    --colorBackground: #C4C3D0;
+    --color1: #f9f9fb;
+    --color2: #e2e2e9;
+    --color3: #071013;
+    --color3a: rgba(7, 16, 19, 0.3);
+
+}
+
+body {
+    overflow: hidden;
+    margin: 0;
+    background-color: var(--colorBackground);
+}
+
+.notransition {
+    transition: none !important;
+}
+
+#topMenu *, .popup * {
+    font-family: "Open Sans", sans-serif;
+}
+
+.pageContainer * {
+    font-family: "Noto Sans JP", "Meiryo", "MS Gothic", sans-serif;
+}
+
+.pageContainer {
+    position: relative;
+    margin: 0 auto;
+}
+
+.pageContainer:hover .textBox {
+    border: 2px solid var(--textBoxBorderHoverColor);
+}
+
+.textBox {
+    display: var(--textBoxDisplay);
+    position: absolute;
+    padding: 0;
+    line-height: 1.1em;
+    font-size: 16pt;
+    white-space: nowrap;
+    border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.textBox:hover {
+    background: rgb(255, 255, 255);
+    border: 1px solid rgba(0, 0, 0, 0);
+    z-index: 999 !important;
+}
+
+.textBox p {
+    display: none;
+    white-space: nowrap;
+    letter-spacing: 0.1em;
+    line-height: 1.1em;
+    margin: 0;
+    background-color: rgb(255, 255, 255);
+}
+
+.textBoxFontSizeOverride .textBox p {
+    font-size: var(--textBoxFontSize) !important;
+}
+
+.textBox:hover p {
+    display: table;
+}
+
+.hovered {
+    background: rgb(255, 255, 255);
+    border: 1px solid rgba(0, 0, 0, 0);
+    z-index: 999 !important;
+}
+
+.hovered p {
+    display: table;
+}
+
+#pagesContainer {
+    display: inline-flex;
+    flex-direction: row;
+    overflow: visible;
+}
+
+#pagesContainer.inverted {
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
+}
+
+.page {
+    display: none;
+    float: left;
+    margin: 0 -1px 0 0;
+}
+
+#leftAPage, #rightAPage, #leftAScreen, #rightAScreen {
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#leftAPage, #rightAPage {
+    /*display: inline-block;*/
+    display: none;
+    position: absolute;
+    top: -5%;
+    width: 10%;
+    height: 110%;
+}
+
+#leftAPage {
+    left: -7%;
+}
+
+#rightAPage {
+    right: -7%;
+}
+
+#leftAScreen, #rightAScreen {
+    display: inline-block;
+    position: fixed;
+    top: 10vh;
+    width: 5vw;
+    height: 90vh;
+}
+
+#leftAScreen {
+    left: 0;
+}
+
+#rightAScreen {
+    right: 0;
+}
+
+#showMenuA {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 3em;
+    height: 3em;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#topMenu {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    margin: 5px;
+    background: var(--color1);
+    border-radius: 3px;
+    box-shadow: 0px 0px 8px 0px var(--color3a);
+    transition: all 0.5s ease-out, max-width 0s ease-in;
+    visibility: visible;
+    opacity: 1;
+    max-width: 100vw;
+    white-space: nowrap;
+}
+
+
+#topMenu.hidden {
+    max-width: 2.5em;
+    visibility: hidden;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 1s ease-in, max-width 0.5s ease-out;
+}
+
+#topMenu * {
+    font-size: 1em;
+    vertical-align: middle;
+}
+
+#topMenu input {
+    height: 1.4em;
+    margin: 0 6px;
+}
+
+#pageIdxDisplay {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.menuButton {
+    background-color: rgba(0, 0, 0, 0);
+    color: var(--color3);
+    border: none;
+    width: 2.5em;
+    height: 2.2em;
+    border-radius: 3px;
+}
+
+.menuButton svg {
+    max-height: 1.5em;
+}
+
+.menuButton:hover {
+    background-color: var(--color2);
+}
+
+.dropdown:hover #dropbtn {
+    background-color: var(--color2);
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: var(--color1);
+    box-shadow: 0px 0px 8px 0px var(--color3a);
+    z-index: 1000;
+    border-radius: 3px;
+    max-height: 90vh;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.dropdown-content .buttonRow {
+    display: flex;
+}
+
+.dropdown-content .menuButton {
+    flex: 1 1 auto;
+    align-self: center;
+}
+
+
+.dropdown-content .dropdown-option {
+    color: var(--color3);
+    padding: 10px 10px;
+    text-decoration: none;
+    white-space: nowrap;
+    display: block;
+    border-radius: 3px;
+}
+
+.dropdown-content .dropdown-option:hover {
+    background-color: var(--color2);
+}
+
+.dropdown-content .dropdown-option [type="checkbox"] {
+    vertical-align: middle;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+#dimOverlay {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50vh;
+    left: 50vw;
+    width: min(720px, 80vw);
+    height: min(480px, 80vh);
+    margin-left: max(-360px, -40vw);
+    margin-top: max(-240px, -40vh);
+    z-index: 1002;
+    background-color: var(--color1);
+    color: var(--color3);
+    box-shadow: 0px 0px 10px 4px var(--color3a);
+    border-radius: 3px;
+    overflow: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    line-height: 1.5em;
+}
+
+
+/*hide arrows from number input*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+</style></head><body><a id="showMenuA" href="#"></a><div id="topMenu"><button id="buttonHideMenu" class="menuButton"><svg width="21px" height="21px" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(5 5)"><path d="m10.5 10.5-10-10z"/><path d="m10.5.5-10 10"/></g></svg></button><button id="buttonLeftLeft" class="menuButton"><svg width="21px" height="21px" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(5 6)"><path d="m8.5 8.5-4-4 4-4"/><path d="m4.5 8.5-4-4 4-4"/></g></svg></button><button id="buttonLeft" class="menuButton"><svg width="21px" height="21px" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><path d="m4.5 8.5-4-4 4-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(7 6)"/></svg></button><button id="buttonRight" class="menuButton"><svg width="21px" height="21px" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><path d="m.5 8.5 4-4-4-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(9 6)"/></svg></button><button id="buttonRightRight" class="menuButton"><svg width="21px" height="21px" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(7 6)"><path d="m.5 8.5 4-4-4-4"/><path d="m4.5 8.5 4-4-4-4"/></g></svg></button><input required type="number" id="pageIdxInput" min="1" max="112" value="1" size="3"></input><span id="pageIdxDisplay"></span><span style="color:rgba(255,255,255,0.1);font-size:1px;">。</span><div class="dropdown"><button id="dropbtn" class="menuButton"><svg width="21px" height="21px" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 6.5h12"/><path d="m4.498 10.5h11.997"/><path d="m4.5 14.5h11.995"/></g></svg></button><div class="dropdown-content"><div class="buttonRow"><button id="menuFitToScreen" class="menuButton"><svg width="21px" height="21px" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(2 2)"><path d="m16.5 5.5v-5h-5"/><path d="m16.5.5-6 5.929"/><path d="m5.5 16.5-5 .023v-5.023"/><path d="m6.5 10.5-6 6"/></g></svg></button><button id="menuFitToWidth" class="menuButton"><svg width="21px" height="21px" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(1 2)"><path d="m.5.5v16.021"/><path d="m18.5.5v16.021"/><path d="m12.507 12.515 4-4-4-4.015"/><path d="m6.507 12.515-4-4 4-4.015"/><path d="m16.5 8.5h-14"/></g></svg></button><button id="menuOriginalSize" class="menuButton">1:1</button><button id="menuFullScreen" class="menuButton"><svg width="21px" height="21px" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(2 2)"><path d="m16.5 5.5v-4.978l-5.5.014"/><path d="m16.5.522-6 5.907"/><path d="m11 16.521 5.5.002-.013-5.5"/><path d="m16.5 16.429-6-5.907"/><path d="m.5 5.5v-5h5.5"/><path d="m6.5 6.429-6-5.907"/><path d="m6 16.516-5.5.007v-5.023"/><path d="m6.5 10.5-6 6"/></g></svg></button></div><label class="dropdown-option">on page turn: <select id="menuDefaultZoom"><option value="fit to screen">fit to screen</option><option value="fit to width">fit to width</option><option value="original size">original size</option><option value="keep zoom level">keep zoom level</option></select></label><label class="dropdown-option">right to left<input type="checkbox" id="menuR2l"></input></label><label class="dropdown-option">display two pages <input type="checkbox" id="menuDoublePageView"></input></label><label class="dropdown-option">first page is cover <input type="checkbox" id="menuHasCover"></input></label><label class="dropdown-option">ctrl+mouse to move <input type="checkbox" id="menuCtrlToPan"></input></label><label class="dropdown-option">OCR enabled <input type="checkbox" id="menuDisplayOCR"></input></label><label class="dropdown-option">display boxes outlines <input type="checkbox" id="menuTextBoxBorders"></input></label><label class="dropdown-option">editable text <input type="checkbox" id="menuEditableText"></input></label><label class="dropdown-option">font size: <select id="menuFontSize"><option value="auto">auto</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="14">14</option><option value="16">16</option><option value="18">18</option><option value="20">20</option><option value="24">24</option><option value="32">32</option><option value="40">40</option><option value="48">48</option><option value="60">60</option></select></label><label class="dropdown-option">e-ink mode <input type="checkbox" id="menuEInkMode"></input></label><label class="dropdown-option">toggle OCR text boxes on click<input type="checkbox" id="menuToggleOCRTextBoxes"></input></label><label class="dropdown-option">background color<input type="color" value="#C4C3D0" id="menuBackgroundColor"></input></label><a href="#" class="dropdown-option" id="menuReset">reset settings</a><a href="#" class="dropdown-option" id="menuAbout">about/help</a></div></div></div><div id="dimOverlay"></div><div id="popupAbout" class="popup">
+<p>HTML overlay generated with <a href="https://github.com/kha-white/mokuro" target="_blank">mokuro</a> version 0.1.8</p>
+<p>Instructions:</p>
+<ul>
+<li>Navigate pages with:
+    <ul>
+    <li>menu buttons</li>
+    <li>Page Up, Page Down, Home, End keys</li>
+    <li>by clicking left/right edge of the screen</li>
+    </ul>
+<li>Click &#10005; button to hide the menu. To bring it back, clip top-left corner of the screen.</li>
+<li>Select "editable boxes" option, to edit text recognized by OCR. Changes are not saved, it's only for ad-hoc fixes when using look-up dictionary.</li>
+<li>E-ink mode turns off animations and simulates display refresh on each page turn.</li>
+</ul>
+</div><a id="leftAScreen" href="#"></a><a id="rightAScreen" href="#"></a><div id="pagesContainer"><div id="page0" class="page"><div class="pageContainer" style="width:1856; height:2615; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p1.jpg&quot;);"><div class="textBox" style="left:275; top:102; width:1180; height:646; font-size:32.0px; z-index:10;"><p>うん．．．</p><p>バックアップ</p></div><div class="textBox" style="left:591; top:753; width:733; height:99; font-size:32px; z-index:11;"><p>クリスタルハンドース</p></div></div></div><div id="page1" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p2.jpg&quot;);"><div class="textBox" style="left:592; top:148; width:1042; height:135; font-size:32px; z-index:10;"><p>第１章：剣とモンスター</p></div></div></div><div id="page2" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p3.jpg&quot;);"><div class="textBox" style="left:553; top:2693; width:167; height:74; font-size:32px; z-index:11;"><p>カル</p></div><div class="textBox" style="left:1549; top:2283; width:222; height:78; font-size:32px; z-index:10;"><p>行くぞ</p></div></div></div><div id="page3" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p4.jpg&quot;);"><div class="textBox" style="left:1615; top:355; width:428; height:85; font-size:32px; z-index:15;"><p>行っていいぞ</p></div><div class="textBox" style="left:813; top:407; width:408; height:172; font-size:32px; z-index:11;"><p>行っていいん</p><p>ですか？</p></div><div class="textBox" style="left:886; top:856; width:321; height:86; font-size:32px; z-index:17;"><p>わかった。</p></div><div class="textBox" style="left:1354; top:1523; width:704; height:214; font-size:32px; z-index:10;"><p>そうだ。行け。</p><p>もう殴ったりするなよ。</p></div><div class="textBox" style="left:1637; top:1959; width:216; height:77; font-size:32px; z-index:18;"><p>どうぞ</p></div><div class="textBox" style="left:454; top:1963; width:551; height:81; font-size:32px; z-index:12;"><p>カルの命カバなし、</p></div><div class="textBox" style="left:1378; top:2842; width:348; height:80; font-size:32px; z-index:16;"><p>ありがとう。</p></div><div class="textBox" style="left:344; top:2586; width:541; height:80; font-size:32px; z-index:13;"><p>俺の剣はどこだ？</p></div><div class="textBox" style="left:243; top:2831; width:463; height:79; font-size:32px; z-index:14;"><p>わかりません。</p></div></div></div><div id="page4" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p5.jpg&quot;);"><div class="textBox" style="left:1388; top:246; width:541; height:79; font-size:32px; z-index:11;"><p>カルは落ち込む</p></div><div class="textBox" style="left:1550; top:812; width:277; height:84; font-size:32px; z-index:15;"><p>俺の美肌</p></div><div class="textBox" style="left:1203; top:1308; width:460; height:83; font-size:32px; z-index:12;"><p>男が一人いる</p></div><div class="textBox" style="left:383; top:985; width:375; height:79; font-size:32px; z-index:14;"><p>やあ、カル</p></div><div class="textBox" style="left:259; top:2069; width:509; height:189; font-size:32px; z-index:10;"><p>剣を取り</p><p>戻したいのか？</p></div><div class="textBox" style="left:0; top:2449; width:468; height:80; font-size:32px; z-index:13;"><p>おまえは誰だ？</p></div></div></div><div id="page5" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p6.jpg&quot;);"><div class="textBox" style="left:961; top:205; width:140; height:57; font-size:32px; z-index:16;"><p>やあ</p></div><div class="textBox" style="left:854; top:414; width:194; height:71; font-size:32px; z-index:15;"><p>俺の剣</p></div><div class="textBox" style="left:762; top:592; width:414; height:146; font-size:32px; z-index:12;"><p>どこにあるか</p><p>知ってんのか？</p></div><div class="textBox" style="left:818; top:2142; width:343; height:71; font-size:32px; z-index:14;"><p>なんでだ？</p></div><div class="textBox" style="left:230; top:1690; width:527; height:177; font-size:32px; z-index:10;"><p>そこには</p><p>行けないけどな。</p></div><div class="textBox" style="left:1417; top:2577; width:453; height:79; font-size:32px; z-index:13;"><p>僕はバンソム。</p></div><div class="textBox" style="left:717; top:2413; width:420; height:167; font-size:32px; z-index:11;"><p>剣を取り</p><p>戻したいんだ</p></div></div></div><div id="page6" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p7.jpg&quot;);"><div class="textBox" style="left:1331; top:2100; width:557; height:566; font-size:32px; z-index:10;"><p>そこには</p><p>モンスターが</p><p>いるんだ！</p><p>そいつが</p><p>君の剣を</p><p>持っているんだ。</p></div></div></div><div id="page7" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p8.jpg&quot;);"><div class="textBox" style="left:981; top:106; width:413; height:177; font-size:32px; z-index:14;"><p>剣のところに</p><p>行くぞ！</p></div><div class="textBox" style="left:799; top:1207; width:579; height:176; font-size:32px; z-index:10;"><p>でも僕、モンスタ</p><p>いやだよ。</p></div><div class="textBox" style="left:1282; top:1849; width:639; height:87; font-size:32px; z-index:15;"><p>剣を取り戻すんだ！</p></div><div class="textBox" style="left:237; top:1651; width:455; height:170; font-size:32px; z-index:13;"><p>ジンソムは</p><p>少し考えてみる</p></div><div class="textBox" style="left:217; top:2154; width:434; height:179; font-size:32px; z-index:12;"><p>わかった、</p><p>行ってみよう、</p></div><div class="textBox" style="left:556; top:2586; width:328; height:268; font-size:32px; z-index:11;"><p>そうだ！行くぞ！</p></div></div></div><div id="page8" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p9.jpg&quot;);"><div class="textBox" style="left:1456; top:279; width:320; height:180; font-size:32px; z-index:12;"><p>トラックが</p><p>あるんだ。</p></div><div class="textBox" style="left:578; top:1406; width:459; height:178; font-size:32px; z-index:10;"><p>僕のトラックで</p><p>行こう！</p></div><div class="textBox" style="left:1480; top:2442; width:471; height:171; font-size:32px; z-index:11;"><p>これがバンソム</p><p>のトラック？</p></div><div class="textBox" style="left:1164; top:2759; width:223; height:81; font-size:32px; z-index:13;"><p>そうだ。</p></div></div></div><div id="page9" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p10.jpg&quot;);"><div class="textBox" style="left:1471; top:247; width:418; height:173; font-size:32px; z-index:10;"><p>マシーンが</p><p>使えるのか？</p></div><div class="textBox" style="left:942; top:430; width:249; height:82; font-size:32px; z-index:12;"><p>まあね。</p></div><div class="textBox" style="left:1569; top:1871; width:524; height:86; font-size:32px; z-index:11;"><p>ほら、使えるよ！</p></div><div class="textBox" style="left:758; top:2583; width:84; height:162; font-size:32px; z-index:13; writing-mode:vertical-rl;"><p>！！</p></div></div></div><div id="page10" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p11.jpg&quot;);"><div class="textBox" style="left:607; top:131; width:1155; height:62; font-size:32px; z-index:12;"><p>バンソムとカルはトラックに乗っていく。</p></div><div class="textBox" style="left:1057; top:1010; width:858; height:84; font-size:32px; z-index:11;"><p>二人は剣のところに向かう</p></div><div class="textBox" style="left:440; top:1656; width:1034; height:78; font-size:32px; z-index:10;"><p>モンスターがしいるところへ向かう。</p></div></div></div><div id="page11" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p12.jpg&quot;);"><div class="textBox" style="left:952; top:211; width:616; height:73; font-size:32px; z-index:13;"><p>トラックが止まった</p></div><div class="textBox" style="left:1545; top:1760; width:355; height:282; font-size:32px; z-index:11;"><p>バンソムは</p><p>マシーンを</p><p>装着する。</p></div><div class="textBox" style="left:1113; top:2213; width:393; height:297; font-size:32px; z-index:10;"><p>カル、君もっ、</p><p>．．．マシーンが</p><p>いるか？</p></div><div class="textBox" style="left:266; top:2539; width:552; height:163; font-size:32px; z-index:12;"><p>いや、いらない</p><p>俺は剣を取り戻す。</p></div></div></div><div id="page12" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p13.jpg&quot;);"><div class="textBox" style="left:577; top:160; width:1087; height:60; font-size:32px; z-index:13;"><p>二人はモンスタ一のところへ向かう。</p></div><div class="textBox" style="left:1409; top:1552; width:420; height:177; font-size:32px; z-index:12;"><p>カル、あれか</p><p>見えるか？</p></div><div class="textBox" style="left:717; top:1585; width:441; height:181; font-size:32px; z-index:11;"><p>ああ、でも</p><p>あれは何だ？</p></div><div class="textBox" style="left:268; top:2123; width:42; height:110; font-size:32px; z-index:14; writing-mode:vertical-rl;"><p>！</p></div><div class="textBox" style="left:169; top:2658; width:706; height:182; font-size:32px; z-index:10;"><p>バンソムとカルは</p><p>モンスタ一を目にする</p></div></div></div><div id="page13" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p14.jpg&quot;);"></div></div><div id="page14" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p15.jpg&quot;);"><div class="textBox" style="left:412; top:343; width:533; height:80; font-size:32px; z-index:11;"><p>俺の剣があるぞ！</p></div><div class="textBox" style="left:1400; top:795; width:464; height:76; font-size:32px; z-index:12;"><p>モンスターだ！</p></div><div class="textBox" style="left:536; top:2639; width:1000; height:194; font-size:32px; z-index:10;"><p>モンスターはカルを見る</p><p>モンスターは，バンソムを見る。</p></div></div></div><div id="page15" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p16.jpg&quot;);"><div class="textBox" style="left:1185; top:0; width:881; height:405; font-size:32px; z-index:10;"><p>．．．</p></div><div class="textBox" style="left:503; top:1439; width:1298; height:77; font-size:32px; z-index:12;"><p>モンスターはバンソムに向かってくる！</p></div><div class="textBox" style="left:1265; top:637; width:590; height:501; font-size:32px; z-index:11;"><p>！！</p></div><div class="textBox" style="left:419; top:2041; width:101; height:195; font-size:32px; z-index:13; writing-mode:vertical-rl;"><p>！！</p></div></div></div><div id="page16" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p17.jpg&quot;);"><div class="textBox" style="left:431; top:1569; width:353; height:137; font-size:32px; z-index:11;"><p>わー！</p></div><div class="textBox" style="left:261; top:2480; width:687; height:90; font-size:32px; z-index:10;"><p>バンソムは逃げる！</p></div></div></div><div id="page17" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p18.jpg&quot;);"><div class="textBox" style="left:413; top:656; width:400; height:92; font-size:32px; z-index:10;"><p>バンソム！</p></div><div class="textBox" style="left:472; top:1461; width:331; height:93; font-size:32px; z-index:11;"><p>俺の剣</p></div><div class="textBox" style="left:1764; top:2529; width:35; height:98; font-size:32px; z-index:12; writing-mode:vertical-rl;"><p>！</p></div></div></div><div id="page18" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p19.jpg&quot;);"><div class="textBox" style="left:1393; top:1440; width:391; height:190; font-size:32px; z-index:11;"><p>バンソムは</p><p>木に登る</p></div><div class="textBox" style="left:1109; top:2363; width:669; height:149; font-size:32px; z-index:10;"><p>モンスター</p></div></div></div><div id="page19" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p20.jpg&quot;);"><div class="textBox" style="left:506; top:217; width:506; height:200; font-size:32px; z-index:11;"><p>ここだ</p></div><div class="textBox" style="left:282; top:2108; width:745; height:263; font-size:32px; z-index:10;"><p>この剣が</p><p>ほしいんだろ？</p></div></div></div><div id="page20" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p21.jpg&quot;);"><div class="textBox" style="left:393; top:271; width:457; height:191; font-size:32px; z-index:11;"><p>モンスターは</p><p>カルを見る。</p></div><div class="textBox" style="left:598; top:1838; width:477; height:288; font-size:32px; z-index:10;"><p>モンスターは、</p><p>カルに</p><p>向かってくる</p></div></div></div><div id="page21" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p22.jpg&quot;);"><div class="textBox" style="left:1242; top:984; width:781; height:97; font-size:32px; z-index:11;"><p>カルは切りかかる！</p></div><div class="textBox" style="left:1382; top:2788; width:758; height:156; font-size:32px; z-index:10;"><p>モンスター</p></div><div class="textBox" style="left:1145; top:2451; width:73; height:255; font-size:32px; z-index:12; writing-mode:vertical-rl;"><p>ーー、</p></div></div></div><div id="page22" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p23.jpg&quot;);"><div class="textBox" style="left:1184; top:366; width:98; height:198; font-size:32px; z-index:10; writing-mode:vertical-rl;"><p>！！</p></div></div></div><div id="page23" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p24.jpg&quot;);"><div class="textBox" style="left:1206; top:1375; width:728; height:87; font-size:32px; z-index:11;"><p>カルはバンソムを見る</p></div><div class="textBox" style="left:276; top:996; width:278; height:107; font-size:32px; z-index:12;"><p>カル！</p></div><div class="textBox" style="left:986; top:2134; width:1088; height:88; font-size:32px; z-index:10;"><p>モンスターがカルに向かってくる！</p></div></div></div><div id="page24" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p25.jpg&quot;);"><div class="textBox" style="left:860; top:786; width:599; height:134; font-size:32px; z-index:11;"><p>『モンスター</p></div><div class="textBox" style="left:1378; top:1250; width:610; height:385; font-size:32px; z-index:10;"><p>パンチ！</p></div></div></div><div id="page25" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p26.jpg&quot;);"><div class="textBox" style="left:1305; top:259; width:639; height:267; font-size:32px; z-index:10;"><p>モンスタ</p><p>倒れた！</p><p>＊一は</p></div><div class="textBox" style="left:1399; top:2323; width:653; height:99; font-size:32px; z-index:11;"><p>僕のマシーンが</p></div></div></div><div id="page26" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p27.jpg&quot;);"><div class="textBox" style="left:743; top:205; width:354; height:186; font-size:32px; z-index:11;"><p>バンソム！</p><p>大丈夫？</p></div><div class="textBox" style="left:235; top:976; width:525; height:82; font-size:32px; z-index:12;"><p>ああ、大丈夫だ</p></div><div class="textBox" style="left:405; top:1598; width:38; height:99; font-size:32px; z-index:15; writing-mode:vertical-rl;"><p>！</p></div><div class="textBox" style="left:217; top:2089; width:305; height:63; font-size:32px; z-index:14;"><p>クリスタルで</p></div><div class="textBox" style="left:1419; top:2640; width:514; height:83; font-size:32px; z-index:13;"><p>カル、どうした？</p></div><div class="textBox" style="left:750; top:2535; width:439; height:197; font-size:32px; z-index:10;"><p>クリスタルが</p><p>あるぞ！</p></div></div></div><div id="page27" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p28.jpg&quot;);"><div class="textBox" style="left:1414; top:104; width:411; height:182; font-size:32px; z-index:12;"><p>どこにも</p><p>見えないよ！</p></div><div class="textBox" style="left:899; top:245; width:104; height:93; font-size:32px; z-index:15;"><p>？？</p></div><div class="textBox" style="left:219; top:552; width:352; height:66; font-size:32px; z-index:14;"><p>見えるのか？</p></div><div class="textBox" style="left:1118; top:1256; width:331; height:78; font-size:32px; z-index:13;"><p>見えるよ！</p></div><div class="textBox" style="left:1455; top:1799; width:547; height:194; font-size:32px; z-index:10;"><p>ほら、</p><p>たくさんあるよ！</p></div><div class="textBox" style="left:214; top:2581; width:470; height:201; font-size:32px; z-index:11;"><p>わあ</p><p>クリスタルだ。</p></div></div></div><div id="page28" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p29.jpg&quot;);"><div class="textBox" style="left:1548; top:278; width:401; height:260; font-size:32px; z-index:11;"><p>この</p><p>クリスタルは</p><p>金になるぞ！</p></div><div class="textBox" style="left:583; top:379; width:396; height:265; font-size:32px; z-index:10;"><p>クリスタルは</p><p>マシーンにも</p><p>使えるね。</p></div><div class="textBox" style="left:1213; top:1639; width:727; height:83; font-size:32px; z-index:12;"><p>しかも剣も取り戻した</p></div><div class="textBox" style="left:410; top:1721; width:531; height:81; font-size:32px; z-index:13;"><p>そう！やったね！</p></div></div></div><div id="page29" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p30.jpg&quot;);"><div class="textBox" style="left:666; top:325; width:464; height:180; font-size:32px; z-index:10;"><p>はい、こちらに</p><p>なります。</p></div><div class="textBox" style="left:1569; top:1272; width:271; height:83; font-size:32px; z-index:13;"><p>バンソム</p></div><div class="textBox" style="left:666; top:873; width:341; height:80; font-size:32px; z-index:12;"><p>ありがとう。</p></div><div class="textBox" style="left:396; top:870; width:41; height:47; font-size:32px; z-index:14;"><p>ま</p></div><div class="textBox" style="left:1327; top:2333; width:605; height:78; font-size:32px; z-index:11;"><p>チームになろうか？</p></div></div></div><div id="page30" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p31.jpg&quot;);"><div class="textBox" style="left:1331; top:98; width:548; height:179; font-size:32px; z-index:11;"><p>僕はモンスターが</p><p>嫌いだ</p></div><div class="textBox" style="left:145; top:122; width:612; height:184; font-size:32px; z-index:10;"><p>でも、</p><p>クリスタルはほしい</p></div><div class="textBox" style="left:1527; top:1719; width:280; height:71; font-size:32px; z-index:13;"><p>わかった。</p></div><div class="textBox" style="left:878; top:1890; width:305; height:183; font-size:32px; z-index:12;"><p>チームに</p><p>なろう！</p></div></div></div><div id="page31" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p32.jpg&quot;);"><div class="textBox" style="left:506; top:250; width:1146; height:158; font-size:32.0px; z-index:10;"><p>カルはハッピーだ。バンソムもハッピー</p><p>彼らはチームになった。</p></div></div></div><div id="page32" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p33.jpg&quot;);"><div class="textBox" style="left:955; top:116; width:245; height:77; font-size:32px; z-index:12;"><p>第２章：</p></div><div class="textBox" style="left:541; top:220; width:1052; height:80; font-size:32px; z-index:11;"><p>僕達はクリスタル・ハンターだ！</p></div><div class="textBox" style="left:619; top:1790; width:433; height:223; font-size:32px; z-index:10;"><p>ンソム</p><p>止まれ！</p></div></div></div><div id="page33" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p34.jpg&quot;);"><div class="textBox" style="left:823; top:713; width:205; height:69; font-size:32px; z-index:15;"><p>なに？</p></div><div class="textBox" style="left:908; top:1361; width:610; height:164; font-size:32.0px; z-index:11;"><p>あそこに</p><p>クリスタルがあるぞ。</p></div><div class="textBox" style="left:702; top:1078; width:307; height:179; font-size:32.0px; z-index:14;"><p>バンソム、</p><p>あっちだ！</p></div><div class="textBox" style="left:413; top:1760; width:611; height:269; font-size:32px; z-index:10;"><p>どこ？</p><p>見えないけど？</p></div><div class="textBox" style="left:1445; top:2218; width:361; height:174; font-size:32px; z-index:12;"><p>カルは剣を</p><p>手に取る。</p></div><div class="textBox" style="left:353; top:2255; width:338; height:181; font-size:32px; z-index:13;"><p>バンソム</p><p>行くぞ！</p></div></div></div><div id="page34" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p35.jpg&quot;);"><div class="textBox" style="left:759; top:257; width:645; height:166; font-size:32px; z-index:11;"><p>バンソムは新しい</p><p>マシーンを持っている</p></div><div class="textBox" style="left:1524; top:1008; width:396; height:180; font-size:32px; z-index:12;"><p>クリスタルが</p><p>見える！</p></div><div class="textBox" style="left:795; top:1111; width:530; height:84; font-size:32px; z-index:14;"><p>どこにあるんだ？</p></div><div class="textBox" style="left:222; top:2096; width:811; height:183; font-size:32px; z-index:10;"><p>カルと／バンソムは</p><p>クリスタルのところに行く</p></div><div class="textBox" style="left:1584; top:2514; width:318; height:185; font-size:32px; z-index:13;"><p>わかった。</p><p>行こう。</p></div></div></div><div id="page35" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p36.jpg&quot;);"><div class="textBox" style="left:278; top:330; width:203; height:75; font-size:32px; z-index:13;"><p>カル！</p></div><div class="textBox" style="left:781; top:1069; width:484; height:94; font-size:32px; z-index:12;"><p>あれを見ろ</p></div><div class="textBox" style="left:428; top:1611; width:513; height:258; font-size:32px; z-index:10;"><p>え、あれはなんだっ</p><p>なんだ？</p></div><div class="textBox" style="left:1478; top:2688; width:520; height:225; font-size:32px; z-index:11;"><p>わからない！</p><p>走れ！！</p></div></div></div><div id="page36" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p37.jpg&quot;);"><div class="textBox" style="left:774; top:188; width:327; height:136; font-size:32px; z-index:12;"><p>ああ</p></div><div class="textBox" style="left:1011; top:2566; width:310; height:172; font-size:32px; z-index:10;"><p>バンソム</p><p>大丈夫？</p></div><div class="textBox" style="left:142; top:2687; width:270; height:186; font-size:32px; z-index:11;"><p>あ．．．</p><p>あれは</p></div></div></div><div id="page37" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p38.jpg&quot;);"><div class="textBox" style="left:583; top:2014; width:991; height:196; font-size:32px; z-index:10;"><p>モンスターだ</p></div></div></div><div id="page38" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p39.jpg&quot;);"><div class="textBox" style="left:1425; top:1314; width:540; height:178; font-size:32px; z-index:11;"><p>でもモンスターは</p><p>強い！</p></div><div class="textBox" style="left:953; top:762; width:561; height:174; font-size:32px; z-index:10;"><p>カルはモンスター</p><p>に向かう！</p></div></div></div><div id="page39" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p40.jpg&quot;);"><div class="textBox" style="left:1591; top:1338; width:449; height:210; font-size:32px; z-index:12;"><p>カルー</p><p>トラックだ！</p></div><div class="textBox" style="left:692; top:1517; width:295; height:182; font-size:32px; z-index:13;"><p>カル</p><p>だめだ</p></div><div class="textBox" style="left:1611; top:2586; width:470; height:247; font-size:32px; z-index:10;"><p>剣を取って</p><p>．．．こなきゃ！</p></div><div class="textBox" style="left:840; top:2675; width:480; height:222; font-size:32px; z-index:11;"><p>カルは剣を</p><p>取りに行く</p></div></div></div><div id="page40" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p41.jpg&quot;);"><div class="textBox" style="left:1620; top:195; width:357; height:171; font-size:32px; z-index:11;"><p>カルは剣を</p><p>つかんだ！</p></div><div class="textBox" style="left:864; top:1069; width:662; height:182; font-size:32px; z-index:10;"><p>モンスターが</p><p>カルに向かってくる</p></div><div class="textBox" style="left:816; top:2668; width:336; height:115; font-size:32px; z-index:13;"><p>カル</p></div><div class="textBox" style="left:812; top:2666; width:341; height:118; font-size:32px; z-index:12;"><p>カル！</p></div></div></div><div id="page41" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p42.jpg&quot;);"><div class="textBox" style="left:446; top:372; width:590; height:170; font-size:32px; z-index:10;"><p>乗れ！</p></div></div></div><div id="page42" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p43.jpg&quot;);"><div class="textBox" style="left:1193; top:173; width:769; height:83; font-size:32px; z-index:12;"><p>カルはトラックに乗る</p></div><div class="textBox" style="left:212; top:154; width:440; height:211; font-size:32px; z-index:11;"><p>車を</p><p>行け！？</p><p>出してくれ」</p></div><div class="textBox" style="left:1200; top:1908; width:711; height:179; font-size:32px; z-index:10;"><p>モンスターはトラックに</p><p>追いつけない</p></div></div></div><div id="page43" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p44.jpg&quot;);"><div class="textBox" style="left:1688; top:443; width:322; height:108; font-size:32px; z-index:14;"><p>悔しいな。</p></div><div class="textBox" style="left:1422; top:1172; width:467; height:179; font-size:32px; z-index:12;"><p>俺はクリスタル</p><p>がほしい！</p></div><div class="textBox" style="left:894; top:656; width:299; height:291; font-size:32px; z-index:11;"><p>僕達は</p><p>無事だ、</p></div><div class="textBox" style="left:938; top:1236; width:349; height:60; font-size:32px; z-index:15;"><p>わかっている</p></div><div class="textBox" style="left:1551; top:2366; width:519; height:179; font-size:32px; z-index:10;"><p>でも、モンスタ</p><p>がいるぞ！</p></div><div class="textBox" style="left:1149; top:2413; width:241; height:176; font-size:32px; z-index:13;"><p>カルは</p><p>考える</p></div></div></div><div id="page44" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p45.jpg&quot;);"><div class="textBox" style="left:252; top:570; width:603; height:182; font-size:32px; z-index:12;"><p>バンソム、あそこに</p><p>女の子がいるぞ？</p></div><div class="textBox" style="left:1110; top:819; width:146; height:80; font-size:32px; z-index:13;"><p>ああ</p></div><div class="textBox" style="left:749; top:977; width:451; height:247; font-size:32px; z-index:11;"><p>でも、彼女が</p><p>持っているのは</p><p>なんだ？</p></div><div class="textBox" style="left:1134; top:1633; width:663; height:184; font-size:32px; z-index:10;"><p>弓だ！あの女の子の</p><p>ところに行こう。</p></div></div></div><div id="page45" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p46.jpg&quot;);"><div class="textBox" style="left:1548; top:142; width:348; height:81; font-size:32px; z-index:11;"><p>こんにちは</p></div><div class="textBox" style="left:1454; top:585; width:185; height:34; font-size:32px; z-index:15;"><p>．．．．．</p></div><div class="textBox" style="left:1383; top:1467; width:566; height:90; font-size:32px; z-index:10;"><p>カルってし、うんだ</p></div><div class="textBox" style="left:827; top:802; width:355; height:78; font-size:32px; z-index:12;"><p>あんた誰？</p></div><div class="textBox" style="left:871; top:2259; width:225; height:32; font-size:32px; z-index:14;"><p>．．．．．．</p></div><div class="textBox" style="left:1573; top:2668; width:265; height:32; font-size:32px; z-index:13;"><p>．．．．．．</p></div></div></div><div id="page46" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p47.jpg&quot;);"><div class="textBox" style="left:1122; top:110; width:434; height:176; font-size:32px; z-index:10;"><p>君は弓が</p><p>使えるのか？</p></div><div class="textBox" style="left:690; top:690; width:247; height:182; font-size:32px; z-index:11;"><p>ああ、</p><p>使える</p></div><div class="textBox" style="left:520; top:1189; width:289; height:75; font-size:32px; z-index:13;"><p>本当に？</p></div><div class="textBox" style="left:981; top:1693; width:359; height:79; font-size:32px; z-index:12;"><p>それじゃあ、</p></div></div></div><div id="page47" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p48.jpg&quot;);"><div class="textBox" style="left:247; top:116; width:503; height:316; font-size:32px; z-index:10;"><p>女の子は</p><p>弓を射る</p></div></div></div><div id="page48" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p49.jpg&quot;);"><div class="textBox" style="left:273; top:2726; width:516; height:137; font-size:32px; z-index:10;"><p>君は何者？</p></div></div></div><div id="page49" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p50.jpg&quot;);"><div class="textBox" style="left:265; top:255; width:304; height:179; font-size:32px; z-index:13;"><p>僕は</p><p>バンソム</p></div><div class="textBox" style="left:708; top:974; width:466; height:174; font-size:32px; z-index:11;"><p>カルと僕は</p><p>チームなんだ</p></div><div class="textBox" style="left:732; top:1376; width:414; height:349; font-size:32px; z-index:10;"><p>クリスタルを</p><p>探してるんだ。</p><p>君もクリスタル</p><p>がほしい？</p></div><div class="textBox" style="left:576; top:2141; width:376; height:166; font-size:32px; z-index:12;"><p>クリスタルは</p><p>金になるぞ！</p></div><div class="textBox" style="left:515; top:1888; width:188; height:87; font-size:32px; z-index:16;"><p>さあ．．．</p></div><div class="textBox" style="left:1628; top:2475; width:411; height:83; font-size:32px; z-index:14;"><p>私はスバサ。</p></div><div class="textBox" style="left:655; top:2711; width:347; height:67; font-size:32px; z-index:15;"><p>知っている。</p></div></div></div><div id="page50" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p51.jpg&quot;);"><div class="textBox" style="left:1479; top:521; width:442; height:162; font-size:32px; z-index:12;"><p>でも、モンスタ</p><p>がいるんだ！</p></div><div class="textBox" style="left:775; top:687; width:397; height:82; font-size:32px; z-index:13;"><p>モンスター</p></div><div class="textBox" style="left:1445; top:1009; width:437; height:271; font-size:32px; z-index:10;"><p>そう、僕は</p><p>モンスターが</p><p>嫌いだけどね</p></div><div class="textBox" style="left:295; top:1144; width:396; height:78; font-size:32px; z-index:14;"><p>私は好きよ。</p></div><div class="textBox" style="left:1545; top:2719; width:164; height:29; font-size:29px; z-index:15;"><p>．．．．．</p></div><div class="textBox" style="left:662; top:2559; width:644; height:173; font-size:32px; z-index:11;"><p>モンスター一のところに</p><p>行きましょうよ！</p></div></div></div><div id="page51" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p52.jpg&quot;);"><div class="textBox" style="left:1563; top:190; width:334; height:288; font-size:32px; z-index:12;"><p>そうしよう！</p><p>俺達は</p><p>チームだ</p></div><div class="textBox" style="left:265; top:724; width:456; height:349; font-size:32px; z-index:11;"><p>いや、</p><p>チームなんか</p><p>じゃない。</p></div><div class="textBox" style="left:1417; top:1384; width:588; height:326; font-size:32px; z-index:10;"><p>モンスターーはどこ？</p></div><div class="textBox" style="left:393; top:1691; width:252; height:83; font-size:32px; z-index:13;"><p>行くぞ！</p></div></div></div><div id="page52" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p53.jpg&quot;);"><div class="textBox" style="left:1633; top:890; width:282; height:262; font-size:32px; z-index:11;"><p>これは</p><p>あなたの</p><p>トラック？</p></div><div class="textBox" style="left:1354; top:1150; width:154; height:80; font-size:32px; z-index:13;"><p>そう。</p></div><div class="textBox" style="left:808; top:1068; width:384; height:80; font-size:32px; z-index:12;"><p>気に入った。</p></div><div class="textBox" style="left:415; top:1331; width:89; height:34; font-size:32px; z-index:14;"><p>．．．</p></div><div class="textBox" style="left:125; top:2082; width:622; height:177; font-size:32px; z-index:10;"><p>彼らはモンスターの</p><p>ところに行く。</p></div></div></div><div id="page53" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p54.jpg&quot;);"><div class="textBox" style="left:1130; top:102; width:617; height:83; font-size:32px; z-index:11;"><p>トラックが止まった</p></div><div class="textBox" style="left:449; top:934; width:521; height:102; font-size:32px; z-index:10;"><p>さあ、行こう！</p></div><div class="textBox" style="left:2063; top:2350; width:96; height:27; font-size:21px; z-index:13;"><p>２０１８年１２月２８日</p></div><div class="textBox" style="left:2022; top:2824; width:143; height:104; font-size:28px; z-index:12;"><p>それは．．．そうですね</p></div></div></div><div id="page54" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p55.jpg&quot;);"><div class="textBox" style="left:640; top:122; width:552; height:177; font-size:32px; z-index:10;"><p>モンスタ一なんか</p><p>いないけど。</p></div><div class="textBox" style="left:1042; top:843; width:502; height:178; font-size:32px; z-index:11;"><p>いや、でも</p><p>ここにいるんだ</p></div><div class="textBox" style="left:1577; top:1703; width:383; height:168; font-size:32px; z-index:12;"><p>クリスタルか</p><p>見える！</p></div><div class="textBox" style="left:434; top:1492; width:303; height:90; font-size:32px; z-index:13;"><p>あった！</p></div></div></div><div id="page55" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p56.jpg&quot;);"><div class="textBox" style="left:256; top:219; width:676; height:183; font-size:32px; z-index:10;"><p>ああ、でも</p><p>モンスタ・一はどこだ？</p></div><div class="textBox" style="left:1496; top:1468; width:167; height:227; font-size:32px; z-index:11; writing-mode:vertical-rl;"><p>！？</p></div></div></div><div id="page56" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p57.jpg&quot;);"><div class="textBox" style="left:1267; top:148; width:671; height:117; font-size:32px; z-index:11;"><p>モンスター</p><p>ーだ</p></div><div class="textBox" style="left:643; top:2103; width:637; height:173; font-size:32px; z-index:10;"><p>カルはモンスターに</p><p>向かって行く！</p></div></div></div><div id="page57" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p58.jpg&quot;);"><div class="textBox" style="left:2087; top:169; width:72; height:51; font-size:31px; z-index:12;"><p>あなたが</p></div><div class="textBox" style="left:2060; top:726; width:102; height:30; font-size:30px; z-index:14;"><p>お客様やお</p></div><div class="textBox" style="left:1506; top:774; width:96; height:33; font-size:24px; z-index:13;"><p>．．．</p></div><div class="textBox" style="left:729; top:2057; width:1162; height:88; font-size:32px; z-index:10;"><p>モンスターはカルに向かってくる」</p></div><div class="textBox" style="left:244; top:2538; width:312; height:189; font-size:32px; z-index:11;"><p>カル！</p><p>だめだ！</p></div></div></div><div id="page58" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p59.jpg&quot;);"><div class="textBox" style="left:439; top:879; width:592; height:118; font-size:32px; z-index:11;"><p>モンスター</p></div><div class="textBox" style="left:1307; top:1513; width:452; height:280; font-size:32px; z-index:10;"><p>パンチ！</p></div></div></div><div id="page59" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p60.jpg&quot;);"><div class="textBox" style="left:696; top:278; width:537; height:175; font-size:32px; z-index:10;"><p>だめだ！</p><p>僕のマシーンが</p></div><div class="textBox" style="left:297; top:1185; width:1123; height:78; font-size:32px; z-index:11;"><p>モンスターは／バンソムのほうを見る。</p></div><div class="textBox" style="left:893; top:1653; width:214; height:116; font-size:32px; z-index:13;"><p>ああ</p></div><div class="textBox" style="left:318; top:2675; width:1182; height:57; font-size:32px; z-index:12;"><p>モンスターはバンソムに向かっていく！</p></div></div></div><div id="page60" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p61.jpg&quot;);"><div class="textBox" style="left:1525; top:569; width:328; height:134; font-size:32px; z-index:13;"><p>ああ</p></div><div class="textBox" style="left:106; top:167; width:445; height:105; font-size:32px; z-index:12;"><p>バンソム！</p></div><div class="textBox" style="left:1203; top:977; width:389; height:250; font-size:32px; z-index:11;"><p>スバサ</p><p>弓だ！</p></div><div class="textBox" style="left:858; top:1799; width:471; height:210; font-size:32px; z-index:10;"><p>カルは剣で</p><p>切りつける！</p></div><div class="textBox" style="left:645; top:2549; width:51; height:164; font-size:32px; z-index:14; writing-mode:vertical-rl;"><p>！</p></div></div></div><div id="page61" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p62.jpg&quot;);"><div class="textBox" style="left:386; top:103; width:587; height:268; font-size:32px; z-index:10;"><p>バンソムが</p><p>モンスターの</p><p>攻撃に使われる</p></div><div class="textBox" style="left:471; top:1426; width:362; height:141; font-size:32px; z-index:12;"><p>ああ</p></div><div class="textBox" style="left:324; top:2309; width:399; height:323; font-size:32px; z-index:11;"><p>スバサドーに</p><p>どこに</p><p>いるんだ？</p></div></div></div><div id="page62" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p63.jpg&quot;);"><div class="textBox" style="left:1325; top:1445; width:432; height:229; font-size:32px; z-index:10;"><p>バンソム</p><p>だめだ！</p></div><div class="textBox" style="left:180; top:1462; width:647; height:130; font-size:32px; z-index:12;"><p>助けてくれ</p></div><div class="textBox" style="left:173; top:1464; width:654; height:132; font-size:32px; z-index:11;"><p>助けてくれ！</p></div></div></div><div id="page63" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p64.jpg&quot;);"><div class="textBox" style="left:524; top:110; width:577; height:277; font-size:32px; z-index:10;"><p>モンスター</p><p>こっちよ！</p></div><div class="textBox" style="left:1521; top:1939; width:481; height:262; font-size:32px; z-index:11;"><p>スバサは</p><p>弓を射る！</p></div></div></div><div id="page64" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p65.jpg&quot;);"></div></div><div id="page65" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p66.jpg&quot;);"><div class="textBox" style="left:1113; top:980; width:552; height:288; font-size:32px; z-index:10;"><p>さようなら</p><p>モンスター</p></div></div></div><div id="page66" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p67.jpg&quot;);"><div class="textBox" style="left:211; top:1129; width:152; height:38; font-size:30px; z-index:14;"><p>それはそうですね</p></div><div class="textBox" style="left:5; top:980; width:313; height:65; font-size:32px; z-index:13;"><p>それはそういうことですが．．．</p></div><div class="textBox" style="left:1293; top:1415; width:568; height:226; font-size:32px; z-index:10;"><p>「</p><p>モンスター（</p><p>倒れる！</p></div><div class="textBox" style="left:884; top:1905; width:357; height:178; font-size:32px; z-index:11;"><p>バンソムは</p><p>どこ？</p></div><div class="textBox" style="left:581; top:2658; width:409; height:80; font-size:32px; z-index:12;"><p>わからない！</p></div></div></div><div id="page67" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p68.jpg&quot;);"><div class="textBox" style="left:318; top:312; width:252; height:185; font-size:32px; z-index:11;"><p>僕は</p><p>ここだ！</p></div><div class="textBox" style="left:443; top:1480; width:578; height:90; font-size:32px; z-index:10;"><p>ありがとうスバサ。</p></div></div></div><div id="page68" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p69.jpg&quot;);"><div class="textBox" style="left:171; top:158; width:632; height:286; font-size:32px; z-index:10;"><p>バンソムは無事だ</p><p>そしてクリスタルが</p><p>手に入ったぞ！</p></div><div class="textBox" style="left:1405; top:1474; width:325; height:254; font-size:32px; z-index:11;"><p>それに、</p><p>僕達はもう</p><p>チームだ！</p></div><div class="textBox" style="left:166; top:2046; width:277; height:286; font-size:32px; z-index:12;"><p>そう、</p><p>私達は</p><p>チーム。</p></div></div></div><div id="page69" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p70.jpg&quot;);"><div class="textBox" style="left:1573; top:209; width:449; height:315; font-size:32px; z-index:10;"><p>私達は</p><p>クリスタル</p><p>ハンターだ！</p></div><div class="textBox" style="left:506; top:2613; width:1173; height:80; font-size:32px; z-index:11;"><p>僕達はクリスタル・ハンターだ！</p></div></div></div><div id="page70" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p71.jpg&quot;);"><div class="textBox" style="left:658; top:220; width:869; height:146; font-size:32px; z-index:10;"><p>第３章：角モンスター</p></div><div class="textBox" style="left:792; top:631; width:488; height:63; font-size:32px; z-index:11;"><p>角モンスター</p></div><div class="textBox" style="left:905; top:1665; width:327; height:80; font-size:32px; z-index:12;"><p>富金あ！</p></div></div></div><div id="page71" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p72.jpg&quot;);"><div class="textBox" style="left:1548; top:259; width:292; height:181; font-size:32px; z-index:13;"><p>角って</p><p>なんだ？</p></div><div class="textBox" style="left:1363; top:1251; width:588; height:92; font-size:32px; z-index:12;"><p>懸賞金がほしい！！</p></div><div class="textBox" style="left:870; top:881; width:233; height:79; font-size:32px; z-index:14;"><p>これよ。</p></div><div class="textBox" style="left:708; top:1960; width:564; height:183; font-size:32px; z-index:10;"><p>金あ</p><p>賞</p><p>懸</p></div><div class="textBox" style="left:913; top:2523; width:485; height:179; font-size:32px; z-index:11;"><p>角モンスターの</p><p>ところに行こう</p></div></div></div><div id="page72" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p73.jpg&quot;);"><div class="textBox" style="left:568; top:369; width:1111; height:214; font-size:32px; z-index:10;"><p>たくさん人が集まっている。</p><p>彼らもクリスタル・ハンターだ</p></div><div class="textBox" style="left:1287; top:1083; width:414; height:83; font-size:32px; z-index:14;"><p>金がほしい！</p></div><div class="textBox" style="left:407; top:1415; width:420; height:179; font-size:32px; z-index:11;"><p>モンスターは</p><p>嫌いだけど。</p></div><div class="textBox" style="left:1081; top:1612; width:644; height:89; font-size:32px; z-index:12;"><p>金が手に入るんだ！！</p></div><div class="textBox" style="left:262; top:2315; width:683; height:80; font-size:32px; z-index:13;"><p>モンスターはどこだ？</p></div></div></div><div id="page73" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p74.jpg&quot;);"><div class="textBox" style="left:1063; top:119; width:881; height:187; font-size:32px; z-index:11;"><p>クリスタル・ハンター達は</p><p>角モンスターのところに行く</p></div><div class="textBox" style="left:1679; top:569; width:312; height:173; font-size:32px; z-index:14;"><p>懸賞金を</p><p>もらうぞ！</p></div><div class="textBox" style="left:719; top:467; width:427; height:152; font-size:32px; z-index:13;"><p>角モンスターを</p><p>倒してやる！</p></div><div class="textBox" style="left:316; top:661; width:249; height:82; font-size:32px; z-index:16;"><p>行くぞ！</p></div><div class="textBox" style="left:1507; top:1865; width:421; height:176; font-size:32px; z-index:12;"><p>角モンスター</p><p>に会いたい！</p></div><div class="textBox" style="left:244; top:1847; width:697; height:292; font-size:32px; z-index:10;"><p>僕はモンスター</p><p>が嫌いだけど</p><p>でも．．．</p></div><div class="textBox" style="left:1058; top:2671; width:412; height:78; font-size:32px; z-index:15;"><p>金がほしい！</p></div><div class="textBox" style="left:684; top:2514; width:143; height:66; font-size:32px; z-index:18;"><p>はい</p></div><div class="textBox" style="left:515; top:2669; width:193; height:63; font-size:32px; z-index:17;"><p>行こう</p></div></div></div><div id="page74" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p75.jpg&quot;);"><div class="textBox" style="left:357; top:268; width:886; height:182; font-size:32px; z-index:10;"><p>カル、バンソム、スバサは</p><p>角モンスターのところに行く。</p></div><div class="textBox" style="left:279; top:1757; width:438; height:182; font-size:32px; z-index:11;"><p>スバサは弓を</p><p>持っている。</p></div><div class="textBox" style="left:1553; top:2621; width:316; height:176; font-size:32px; z-index:13;"><p>トラックが</p><p>止まった</p></div><div class="textBox" style="left:962; top:2624; width:367; height:173; font-size:32px; z-index:12;"><p>カルは剣を</p><p>持っている。</p></div></div></div><div id="page75" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p76.jpg&quot;);"><div class="textBox" style="left:835; top:138; width:514; height:179; font-size:32px; z-index:12;"><p>バンソムの</p><p>マジーンがない</p></div><div class="textBox" style="left:312; top:432; width:489; height:171; font-size:32px; z-index:13;"><p>僕のマシーンは</p><p>どこ？</p></div><div class="textBox" style="left:1218; top:1282; width:689; height:211; font-size:32px; z-index:10;"><p>バンソム</p><p>マジーンがないの？</p></div><div class="textBox" style="left:479; top:1046; width:374; height:77; font-size:32px; z-index:14;"><p>知らないよ。</p></div><div class="textBox" style="left:554; top:2460; width:497; height:191; font-size:32px; z-index:11;"><p>トラックの中に</p><p>ないんだ！</p></div></div></div><div id="page76" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p77.jpg&quot;);"><div class="textBox" style="left:1262; top:315; width:21; height:99; font-size:21px; z-index:19; writing-mode:vertical-rl;"><p>．．．</p></div><div class="textBox" style="left:181; top:219; width:654; height:105; font-size:32px; z-index:13;"><p>角モンスターだ！</p></div><div class="textBox" style="left:890; top:1064; width:357; height:249; font-size:32px; z-index:12;"><p>行くぞ！</p></div><div class="textBox" style="left:1378; top:1605; width:521; height:176; font-size:32px; z-index:11;"><p>でも、マシーンが</p><p>ないんだよ。</p></div><div class="textBox" style="left:449; top:1996; width:329; height:79; font-size:32px; z-index:16;"><p>大丈夫よ。</p></div><div class="textBox" style="left:187; top:2255; width:357; height:107; font-size:32px; z-index:14;"><p>弓があるし</p></div><div class="textBox" style="left:189; top:2263; width:386; height:269; font-size:32px; z-index:10;"><p>カルは剣を</p></div><div class="textBox" style="left:523; top:2680; width:248; height:81; font-size:32px; z-index:17;"><p>行こう！</p></div><div class="textBox" style="left:536; top:2690; width:220; height:66; font-size:32px; z-index:18;"><p>行こう！</p></div><div class="textBox" style="left:187; top:2449; width:369; height:95; font-size:32px; z-index:15;"><p>持っている。</p></div></div></div><div id="page77" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p78.jpg&quot;);"><div class="textBox" style="left:604; top:280; width:1060; height:68; font-size:32px; z-index:11;"><p>彼らは角モンスター一のところに行く。</p></div><div class="textBox" style="left:979; top:1160; width:530; height:168; font-size:32px; z-index:10;"><p>男が木に</p><p>引っかかっている</p></div><div class="textBox" style="left:526; top:1697; width:379; height:78; font-size:32px; z-index:13;"><p>大丈夫か？</p></div><div class="textBox" style="left:1798; top:2472; width:198; height:87; font-size:32px; z-index:14;"><p>ああ．．．</p></div><div class="textBox" style="left:294; top:2507; width:752; height:91; font-size:32px; z-index:12;"><p>角モンスタ一は強い！</p></div></div></div><div id="page78" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p79.jpg&quot;);"><div class="textBox" style="left:1313; top:205; width:604; height:79; font-size:32px; z-index:13;"><p>モンスターはどこ？</p></div><div class="textBox" style="left:690; top:565; width:500; height:178; font-size:32px; z-index:10;"><p>角モンスターは</p><p>あそこだ！</p></div><div class="textBox" style="left:169; top:868; width:499; height:176; font-size:32px; z-index:11;"><p>モンスターの</p><p>ところに行くぞ！</p></div><div class="textBox" style="left:1396; top:1488; width:240; height:82; font-size:32px; z-index:15;"><p>行こう！</p></div><div class="textBox" style="left:1420; top:2605; width:315; height:169; font-size:32px; z-index:12;"><p>カル、</p><p>止まって。</p></div><div class="textBox" style="left:571; top:2447; width:498; height:88; font-size:32px; z-index:14;"><p>あれが見える？</p></div><div class="textBox" style="left:291; top:2641; width:93; height:144; font-size:32px; z-index:16; writing-mode:vertical-rl;"><p>？</p></div></div></div><div id="page79" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p80.jpg&quot;);"><div class="textBox" style="left:1716; top:1849; width:419; height:82; font-size:32px; z-index:11;"><p>あれは何だ？</p></div><div class="textBox" style="left:1081; top:2514; width:536; height:84; font-size:32px; z-index:10;"><p>角モンスターだ！</p></div><div class="textBox" style="left:363; top:2644; width:244; height:76; font-size:32px; z-index:12;"><p>行こう</p></div></div></div><div id="page80" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p81.jpg&quot;);"><div class="textBox" style="left:1036; top:163; width:816; height:182; font-size:32px; z-index:10;"><p>カルとスバサは</p><p>角モンスターを追っていく</p></div><div class="textBox" style="left:303; top:273; width:493; height:176; font-size:32px; z-index:12;"><p>僕のマシーンが</p><p>ないんだ。</p></div><div class="textBox" style="left:1579; top:1097; width:271; height:167; font-size:32px; z-index:14;"><p>カル！</p><p>スバサ！</p></div><div class="textBox" style="left:1542; top:1778; width:313; height:203; font-size:32px; z-index:13;"><p>いいから</p><p>行くぞ！</p></div><div class="textBox" style="left:1105; top:1778; width:217; height:48; font-size:32px; z-index:15;"><p>．．．．．．</p></div><div class="textBox" style="left:830; top:2463; width:397; height:282; font-size:32px; z-index:11;"><p>バンソムも</p><p>モンスターを</p><p>追う。</p></div></div></div><div id="page81" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p82.jpg&quot;);"><div class="textBox" style="left:693; top:169; width:745; height:72; font-size:32px; z-index:11;"><p>あそこに女の子がいる！</p></div><div class="textBox" style="left:278; top:1153; width:291; height:34; font-size:32px; z-index:12;"><p>．．．．．</p></div><div class="textBox" style="left:1690; top:1873; width:296; height:185; font-size:32px; z-index:10;"><p>やあ、</p><p>大丈夫？</p></div></div></div><div id="page82" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p83.jpg&quot;);"><div class="textBox" style="left:1235; top:162; width:658; height:86; font-size:32px; z-index:11;"><p>俺はカルっていうんだ。</p></div><div class="textBox" style="left:1446; top:842; width:214; height:73; font-size:32px; z-index:14;"><p>君は？</p></div><div class="textBox" style="left:0; top:1253; width:866; height:749; font-size:28px; z-index:10;"><p>２０１８年１２月２６日（月）日）に</p><p>それでも、そんなことを考えてくれたのですが、</p><p>そういうことですから、それはそれだけではないですが、これからのコンテンツについては、</p><p>それではないでしょうがないのですが、これからもうちょっとそれはそれだけではないですが、</p><p>それではないので、それはそれだけで</p><p>それではないのですが、これからこそこまではありません。それは．．．</p><p>いや、そんなことはないので、それはそういうのは、</p><p>これからは、そんなことを言っているのは、</p><p>それでもいいのですが、これからもうちょっとしていましたが、それでも、これからも、</p><p>そういうことで、これからのお客様はお客さんのそんなことはないでしょうか。それでもないので、お客様はお客さんの</p><p>結構なんて．．．それは．．．</p><p>それでも、これからのお客さんがああ．．．あああ</p><p>あれはどうなんですか？</p><p>おまえられないです</p><p>それはそれだけど、</p></div><div class="textBox" style="left:1602; top:2279; width:347; height:72; font-size:32px; z-index:13;"><p>大丈夫だよ</p></div><div class="textBox" style="left:1056; top:2756; width:485; height:81; font-size:32px; z-index:12;"><p>もう大丈夫だよ。</p></div></div></div><div id="page83" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p84.jpg&quot;);"><div class="textBox" style="left:1370; top:80; width:387; height:79; font-size:32px; z-index:14;"><p>私はナイツ</p></div><div class="textBox" style="left:711; top:707; width:505; height:84; font-size:32px; z-index:13;"><p>よろしく、ナイツ。</p></div><div class="textBox" style="left:723; top:721; width:465; height:59; font-size:32px; z-index:15;"><p>よろしく、ナイツ</p></div><div class="textBox" style="left:1784; top:1307; width:290; height:80; font-size:32px; z-index:16;"><p>大丈夫？</p></div><div class="textBox" style="left:429; top:872; width:372; height:168; font-size:32px; z-index:10;"><p>バンソムとスバサだよ。</p></div><div class="textBox" style="left:437; top:875; width:352; height:158; font-size:32px; z-index:12;"><p>バンソムと</p><p>スバサだよ</p></div><div class="textBox" style="left:236; top:1182; width:344; height:179; font-size:32px; z-index:11;"><p>大丈夫</p><p>じゃないの</p></div><div class="textBox" style="left:1361; top:2173; width:42; height:108; font-size:32px; z-index:18; writing-mode:vertical-rl;"><p>！</p></div><div class="textBox" style="left:935; top:2096; width:168; height:78; font-size:32px; z-index:17;"><p>よお。</p></div></div></div><div id="page84" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p85.jpg&quot;);"><div class="textBox" style="left:1584; top:175; width:399; height:88; font-size:32px; z-index:12;"><p>俺はデバン。</p></div><div class="textBox" style="left:82; top:1660; width:671; height:187; font-size:32px; z-index:10;"><p>これが俺のクリスタル</p><p>ハンター・チームだ。</p></div><div class="textBox" style="left:1172; top:2269; width:252; height:96; font-size:32px; z-index:13;"><p>おい！</p></div><div class="textBox" style="left:424; top:2762; width:604; height:182; font-size:32px; z-index:11;"><p>そこにモンスター</p><p>がいるぞ！</p></div></div></div><div id="page85" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p86.jpg&quot;);"><div class="textBox" style="left:509; top:223; width:452; height:80; font-size:32px; z-index:11;"><p>デバン、待て！</p></div><div class="textBox" style="left:312; top:435; width:566; height:169; font-size:32px; z-index:10;"><p>ここにはモンスター</p><p>なんかいない。</p></div><div class="textBox" style="left:1212; top:1182; width:267; height:108; font-size:32px; z-index:12;"><p>行け！</p></div></div></div><div id="page86" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p87.jpg&quot;);"><div class="textBox" style="left:419; top:993; width:310; height:219; font-size:32px; z-index:10;"><p>ッ</p><p>う</p><p>だめ！</p></div><div class="textBox" style="left:134; top:2816; width:286; height:88; font-size:32px; z-index:11;"><p>ほらな</p></div></div></div><div id="page87" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p88.jpg&quot;);"><div class="textBox" style="left:692; top:1258; width:41; height:120; font-size:32px; z-index:12; writing-mode:vertical-rl;"><p>！</p></div><div class="textBox" style="left:1306; top:1842; width:806; height:198; font-size:32px; z-index:11;"><p>こいつには角がある</p><p>モンスターだ！</p></div><div class="textBox" style="left:247; top:2584; width:884; height:189; font-size:32px; z-index:10;"><p>違う！ナイツは女の子だ！</p><p>モンスターなんかじゃない」</p></div></div></div><div id="page88" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p89.jpg&quot;);"><div class="textBox" style="left:1480; top:519; width:536; height:232; font-size:32px; z-index:10;"><p>やっちまえ</p></div><div class="textBox" style="left:923; top:1689; width:959; height:113; font-size:32px; z-index:11;"><p>男がナイツにに向かってくる！</p></div><div class="textBox" style="left:738; top:2684; width:652; height:63; font-size:32px; z-index:12;"><p>カルは男を止める！</p></div></div></div><div id="page89" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p90.jpg&quot;);"><div class="textBox" style="left:1063; top:290; width:603; height:95; font-size:32px; z-index:12;"><p>僕のマシーンだ！</p></div><div class="textBox" style="left:1497; top:1306; width:423; height:353; font-size:32px; z-index:10;"><p>いや</p><p>これはもう</p><p>俺のだ！</p></div><div class="textBox" style="left:320; top:741; width:588; height:93; font-size:32px; z-index:13;"><p>それは僕のだ」</p></div><div class="textBox" style="left:1626; top:2714; width:322; height:99; font-size:32px; z-index:14;"><p>デノベ</p></div><div class="textBox" style="left:357; top:2606; width:360; height:190; font-size:32px; z-index:11;"><p>スバサは</p><p>弓を射る</p></div></div></div><div id="page90" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p91.jpg&quot;);"><div class="textBox" style="left:655; top:156; width:482; height:204; font-size:32px; z-index:10;"><p>スバサは</p><p>飛びかかる！</p></div><div class="textBox" style="left:426; top:2569; width:495; height:190; font-size:32px; z-index:11;"><p>女がナイツに</p><p>向かっていく！</p></div></div></div><div id="page91" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p92.jpg&quot;);"><div class="textBox" style="left:382; top:1595; width:598; height:201; font-size:32px; z-index:10;"><p>ナイツはしっぽで</p><p>身を守る！</p></div></div></div><div id="page92" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p93.jpg&quot;);"><div class="textBox" style="left:1209; top:157; width:754; height:209; font-size:32px; z-index:10;"><p>女は倒れた！</p><p>でも、ナイツも倒れた</p></div><div class="textBox" style="left:648; top:1232; width:461; height:87; font-size:32px; z-index:13;"><p>男が倒れた</p></div><div class="textBox" style="left:1633; top:1560; width:293; height:88; font-size:32px; z-index:15;"><p>デバン！</p></div><div class="textBox" style="left:1631; top:1561; width:295; height:85; font-size:32px; z-index:16;"><p>デバン！</p></div><div class="textBox" style="left:1483; top:1928; width:445; height:69; font-size:32px; z-index:14;"><p>「返せ」だって？</p></div><div class="textBox" style="left:259; top:1665; width:479; height:209; font-size:32px; z-index:11;"><p>僕のマシー</p><p>を返せ！</p></div><div class="textBox" style="left:894; top:2719; width:374; height:169; font-size:32px; z-index:12;"><p>それは</p><p>できないな」</p></div></div></div><div id="page93" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p94.jpg&quot;);"><div class="textBox" style="left:383; top:409; width:745; height:211; font-size:32px; z-index:10;"><p>デバンは／バンソムの</p><p>マシーンを使う！</p></div><div class="textBox" style="left:1692; top:1292; width:368; height:253; font-size:32px; z-index:12;"><p>君の</p><p>マシーンは</p><p>気に入った！</p></div><div class="textBox" style="left:330; top:1871; width:534; height:199; font-size:32px; z-index:11;"><p>あばよ、</p><p>マシーン野郎！</p></div><div class="textBox" style="left:220; top:2660; width:330; height:207; font-size:32px; z-index:13;"><p>だめだ！</p><p>やめろ</p></div></div></div><div id="page94" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p95.jpg&quot;);"><div class="textBox" style="left:1659; top:164; width:43; height:125; font-size:32px; z-index:13; writing-mode:vertical-rl;"><p>！</p></div><div class="textBox" style="left:1094; top:1169; width:798; height:88; font-size:32px; z-index:11;"><p>カルはデノベンを止める！</p></div><div class="textBox" style="left:1313; top:1641; width:211; height:78; font-size:32px; z-index:12;"><p>デバン</p></div><div class="textBox" style="left:876; top:2735; width:471; height:190; font-size:32px; z-index:10;"><p>スバサは矢を</p><p>取りに行く</p></div></div></div><div id="page95" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p96.jpg&quot;);"><div class="textBox" style="left:1383; top:726; width:482; height:194; font-size:32px; z-index:10;"><p>スバサは矢で</p><p>切りつける！</p></div><div class="textBox" style="left:1348; top:1241; width:298; height:197; font-size:32px; z-index:11;"><p>もう</p><p>やめて</p></div><div class="textBox" style="left:604; top:1053; width:191; height:49; font-size:32px; z-index:13;"><p>．．．．．．。</p></div><div class="textBox" style="left:899; top:2824; width:301; height:107; font-size:32px; z-index:12;"><p>パンチ！</p></div></div></div><div id="page96" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p97.jpg&quot;);"><div class="textBox" style="left:311; top:130; width:828; height:84; font-size:32px; z-index:11;"><p>カルは剣で切りかかると</p></div><div class="textBox" style="left:138; top:1439; width:281; height:112; font-size:32px; z-index:12;"><p>ああ</p></div><div class="textBox" style="left:136; top:1931; width:947; height:197; font-size:32px; z-index:10;"><p>ナイツは女の子だ</p><p>モンスターなんかじゃない！</p></div><div class="textBox" style="left:769; top:2820; width:266; height:81; font-size:32px; z-index:13;"><p>いいな！</p></div></div></div><div id="page97" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p98.jpg&quot;);"><div class="textBox" style="left:1655; top:244; width:271; height:71; font-size:32px; z-index:13;"><p>わかった。</p></div><div class="textBox" style="left:1474; top:411; width:428; height:164; font-size:32px; z-index:10;"><p>彼女はモンスター</p><p>じゃない。</p></div><div class="textBox" style="left:338; top:154; width:293; height:179; font-size:32px; z-index:11;"><p>大丈夫？</p><p>行こう。</p></div><div class="textBox" style="left:949; top:1793; width:242; height:176; font-size:32px; z-index:12;"><p>ナイツ、</p><p>行こう。</p></div><div class="textBox" style="left:1008; top:2492; width:224; height:32; font-size:32px; z-index:14;"><p>．．．．．．。</p></div></div></div><div id="page98" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p99.jpg&quot;);"><div class="textBox" style="left:1426; top:160; width:587; height:379; font-size:32px; z-index:10;"><p>女は弓を射る！</p></div><div class="textBox" style="left:936; top:185; width:335; height:145; font-size:32px; z-index:13;"><p>ああ</p></div><div class="textBox" style="left:1261; top:1557; width:623; height:181; font-size:32px; z-index:11;"><p>バンソムとナイツが</p><p>カルを支える。</p></div><div class="textBox" style="left:309; top:2026; width:780; height:104; font-size:32px; z-index:12;"><p>スバサは弓を射る</p></div></div></div><div id="page99" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p100.jpg&quot;);"><div class="textBox" style="left:638; top:102; width:763; height:113; font-size:32px; z-index:11;"><p>トラックに乗って</p></div><div class="textBox" style="left:932; top:1796; width:217; height:81; font-size:32px; z-index:12;"><p>カル！</p></div><div class="textBox" style="left:1297; top:2565; width:575; height:174; font-size:32px; z-index:10;"><p>．．．ナイツ</p><p>会えてよかったよ</p></div></div></div><div id="page100" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p101.jpg&quot;);"><div class="textBox" style="left:848; top:168; width:584; height:112; font-size:32px; z-index:11;"><p>車を出して</p></div><div class="textBox" style="left:410; top:440; width:291; height:126; font-size:32px; z-index:12;"><p>追え</p></div><div class="textBox" style="left:1682; top:972; width:199; height:76; font-size:32px; z-index:14;"><p>はい！</p></div><div class="textBox" style="left:113; top:1248; width:477; height:76; font-size:32px; z-index:13;"><p>カル！いやぁ！</p></div><div class="textBox" style="left:1315; top:2056; width:546; height:267; font-size:32px; z-index:10;"><p>デバンのチームは</p><p>トラックに</p><p>追いつけない</p></div></div></div><div id="page101" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p102.jpg&quot;);"><div class="textBox" style="left:708; top:872; width:934; height:125; font-size:32px; z-index:10;"><p>ナイツは角を使う</p></div></div></div><div id="page102" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p103.jpg&quot;);"></div></div><div id="page103" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p104.jpg&quot;);"><div class="textBox" style="left:1352; top:360; width:478; height:80; font-size:32px; z-index:12;"><p>カル、大丈夫？</p></div><div class="textBox" style="left:1652; top:1510; width:228; height:29; font-size:29px; z-index:14;"><p>，，，０００％</p></div><div class="textBox" style="left:985; top:2146; width:367; height:178; font-size:32px; z-index:10;"><p>ナイツ、</p><p>ありがとう」</p></div><div class="textBox" style="left:441; top:1831; width:223; height:34; font-size:32px; z-index:13;"><p>．．．．．．．</p></div><div class="textBox" style="left:1754; top:2669; width:307; height:194; font-size:32px; z-index:11;"><p>もう</p><p>大丈夫！</p></div></div></div><div id="page104" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p105.jpg&quot;);"><div class="textBox" style="left:1477; top:76; width:393; height:179; font-size:32px; z-index:12;"><p>これが</p><p>僕の家だよ</p></div><div class="textBox" style="left:169; top:237; width:530; height:89; font-size:32px; z-index:16;"><p>カル、ありがとう</p></div><div class="textBox" style="left:1545; top:1307; width:363; height:182; font-size:32px; z-index:13;"><p>このお金は</p><p>あげる。</p></div><div class="textBox" style="left:1104; top:798; width:583; height:171; font-size:32px; z-index:11;"><p>ナイツ、バンソムの</p><p>家に行こう！</p></div><div class="textBox" style="left:132; top:899; width:645; height:177; font-size:32px; z-index:10;"><p>でも、私はモンスター</p><p>だから行けない。</p></div><div class="textBox" style="left:125; top:1364; width:498; height:116; font-size:32px; z-index:14;"><p>さようなら！</p></div><div class="textBox" style="left:134; top:2779; width:413; height:125; font-size:32px; z-index:15;"><p>ナイツ</p></div></div></div><div id="page105" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p106.jpg&quot;);"><div class="textBox" style="left:1530; top:134; width:373; height:258; font-size:32px; z-index:12;"><p>待って</p></div><div class="textBox" style="left:229; top:968; width:1041; height:108; font-size:32px; z-index:10;"><p>ナイツはモンスターじゃない」</p></div><div class="textBox" style="left:337; top:1338; width:687; height:90; font-size:32px; z-index:15;"><p>ナイツには角がある</p></div><div class="textBox" style="left:1568; top:1508; width:403; height:176; font-size:32px; z-index:14;"><p>でも、私には</p><p>角がある！</p></div><div class="textBox" style="left:1506; top:2734; width:492; height:179; font-size:32px; z-index:13;"><p>モンスターには</p><p>角があるのよ！</p></div><div class="textBox" style="left:282; top:2520; width:402; height:250; font-size:32px; z-index:11;"><p>でも、ナイツは</p><p>モンスター</p><p>じゃない。</p></div></div></div><div id="page106" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p107.jpg&quot;);"><div class="textBox" style="left:641; top:212; width:542; height:176; font-size:32px; z-index:10;"><p>ナイツ、チームに</p><p>入らない？</p></div><div class="textBox" style="left:1563; top:1167; width:283; height:72; font-size:32px; z-index:13;"><p>チーム？</p></div><div class="textBox" style="left:349; top:1788; width:504; height:77; font-size:32px; z-index:12;"><p>私がチ一ムに？</p></div><div class="textBox" style="left:748; top:2870; width:710; height:81; font-size:32px; z-index:11;"><p>そう。チームに入って</p></div></div></div><div id="page107" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p108.jpg&quot;);"><div class="textBox" style="left:1344; top:167; width:297; height:71; font-size:32px; z-index:12;"><p>ありがとう。</p></div><div class="textBox" style="left:583; top:858; width:689; height:80; font-size:32px; z-index:11;"><p>私達、チ一ムなのね！</p></div><div class="textBox" style="left:318; top:1284; width:1005; height:177; font-size:32px; z-index:10;"><p>ナイツはモンスターではない。</p><p>彼女にはいまやチ一ムの一員だ</p></div></div></div><div id="page108" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p109.jpg&quot;);"><div class="textBox" style="left:622; top:208; width:840; height:118; font-size:32px; z-index:12;"><p>ＡＦＴＥＲＷＯＲＤ：</p></div><div class="textBox" style="left:67; top:410; width:1943; height:757; font-size:32px; z-index:11;"><p>ＨｅｙｅｖｅｒｙｏｎｅｌＭｙｒｉｎｅ．ｉｓＳｅａｎ．Ａｎｄｅｒｓｏｎ．</p><p>．．．ファーーー！！！？ａｎｄエ＂ｍ＇ｏｎｅｏｆｔｈｅｌ．ｃｏｔｉｒ．．．ｃｏｌｔｉｏｎｓｏｎｔｅＣｏｒｓｔａｌ．</p><p>Ｈｕｍａｒｓｔａｃａｍ．Ａｓｙｏｕ．ｃｏｎｔｅｌｆｒｏｍｉＢｏｋｄ．</p><p>．．．．．．わざわざ．．．．．．ｈｅｒｅｒｇｒｅ，ａｎｄｏｗｅｒｙｏｕ．．</p><p>ｅｎｉｏｖｅｄ＋ｈｅｆｉｒｓｔｂｏｋ．．．ｏｆ＊ｈｅｅｐｉｃｍａｎｇａ．</p><p>Ｐｒａｔｒｉｓ．．．ｔｈｏｔｉｌｉｔｅ．ｆｏｒｔｉｃｈｒｅｓｓ</p></div><div class="textBox" style="left:122; top:1233; width:1894; height:1627; font-size:32.0px; z-index:10;"><p>Ｍｙｒｏｌｅｏｎｏｕｒｔｅｃｎ．．．ｉｓｔｈｅｍａｒｉｗｏｒｄ</p><p>ｂｕｉｌｄｅｒ．＆．ｃｈａｒｃｃｔｉｅｒｃｒｅａｔｏｒ，ｗｈｉｌｅ</p><p>Ｎａｔｈｏｎｅｌ（ｋｏｔｅ）ｔａｃｓｃａｒｅｏｆｔｈｅｓｔｏｒｙ</p><p>ｃｒｄｌａｎｇｕａｇｅｌｅｖｅｌ．Ｔｈｉｓｐｕｔｓｍｅｉｎｔｈｅ．</p><p>ｕｎｉｑｕｃｓｉｔｕｔｉｏｎ．ｗｈｅｒ．Ｈ＇ｍ．ｂａｓｉｃａｌｌｙｔｈｅ．</p><p>ａｌｐｈａｒｅａｄｅｒｆｏｒａｓｔｏｒｙｗｈｉｃｈＬｏｒｅｎｔｅｄ</p><p>ｔｈｅｗｏｒｄａｒｄｒｄｃｈａｒｃｃｒｅｒｓｓｆｏｒ．Ｉｆｓｈｏｎｅｓｔｉｙ</p><p>ｃｍａｚｉｎｇｔｏｓｅｅｒｍｙｃｈａｎａｃｔｒｅｒｓｃａｄｔｈｅｒ：</p><p>ｗｏｒｌｄ．ｃｏｍｅｔｏｌｉｆｅ．Ｉｔｈａｓｂｅｅｒｏｖｅｒａ</p><p>ｄｅｃａｄｅｓｉｎｃｅＩｈａｄｉｎｅｆｉｒｓｔ</p><p>ｃｏｎｃｅｐｔｉａｌｉｚａｔｉｒｏｎｓｏｆＣｒｙｓｔａｌｌＨｕｎｔｅｒｓ．</p><p>（Ｋａｌａｎｄｋｎｉｔｅｓｗｅｒｅ－ｔｈｅｆｉｒｓｔｒｉｗｏ</p><p>ｃｈａｎａｃｔｅｒｓ［＋ｈｏｕｇｈｔｏｆｗａｙｂａｃｋｉｎ２０１０）</p><p>ＢｕｔｔｈｅｎＮａｔｔｅ：ｉｏｉｎｅｄｉｎ２０１４，ｏｎｄｏｕｒ</p></div></div></div><div id="page109" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p110.jpg&quot;);"><div class="textBox" style="left:134; top:655; width:157; height:77; font-size:32px; z-index:12;"><p>ｗａｙ！</p></div><div class="textBox" style="left:115; top:163; width:1889; height:486; font-size:32px; z-index:11;"><p>ｏｎｔｉｓｔ１Ｍｉｙｏｎｅｓｃｙ．．ｊｏｎｅｄｉｎ．２０１９．ａｎｄＩａｎｔｗｉｔ．</p><p>また、３．３．５ｃｈｏｐｐｙｔｈａｔｍｙですが、ですから、どれほどですけど、それはそれでもいいでしょう。</p><p>Ｍｏｎｅ．Ｔｒｉｎ．ｈｏｍｅ．ＡｎｄＩｎｓｏｔｈｒｉｌｌｅｄｔｈｅｒｔｅｒｃｈｅｌｉｎｇの</p><p>．．．．．．．．！！？２０００円を１ｃｃｍｍ（ｄｒｏｒｇｕｇｌｏｇｌｅｇｅｒ＞＞１．３／３＞．８Ｆ＂９ｏｎｄ＇ｎ．ｓｕｃｈａｕｎｉｑｕｅ</p></div><div class="textBox" style="left:119; top:884; width:1909; height:1964; font-size:32.0px; z-index:10;"><p>エｌｏｖｅｆｈａｔＮｄｔｅｖｅｒｓｏｆｆｆｒｏｍｉｔｈｅｓｃｆｅ</p><p>ｌａｎｇｕｇｅｌｅｒｎｉｎｇｐａｔｈ．Ｉｍｅａｎ，ｔｈｅｓｔｏｒｙ</p><p>ｏｐｅｎｓｗｉｎｋａｌｉｎ．ｑｉｌａｒｄｉｎ．ｈａｎｄｃｕｆｆｓｆｏｒ</p><p>ｐｕｒｃｈｉｎｇａＱｕａｌｉａ．ｏｆｆｉｃｅｒ．Ａｎｄｒｈｅｒｉｎ．</p><p>．ｃｈａｐｔｅｒｔｗｏ，Ｓｕｂａｓｃ．ｋｉｌｌｓａｍｏｎｓｔｅｒｂｙ</p><p>ｐｕｔｉｒｉｎｇ．ａｎｃｒｏｗｒｉｇｈｔｔｈｒｏｕｇｈｉｔｓｅｙｅ，ｏｎｄ．</p><p>・ｔｈｅｅｒｅｂｕｓｔｅｌＡｎｄｒｉｎｃｈａｐｔｅｒｔｈｒｅｅ，Ｋａｌ</p><p>ｔａｋｅｓｓｒｉｏｎｅ，ｂｕｔｔｗｏｒｄｒｏｗｓｉｎｔｈｅｐｃｋ．</p><p>ｃｎｄｏｎｌｙｌｉｖｅｓｂｅｃａｕｇｅＫｎｉｔｅｓ，ｗｈｏｉｓ</p><p>ｂｌｅｅｄｒａｆｒｏｍａｗｏｕｎｄｓｈｅｇｏｔｅａｒｌｉｅｒ．ｇｏｇｓ</p><p>ｃｌｌｍａｇｉｃｇｉｒｌａｎｄ．ｓｎｖｅｓｈｉｍ．Ｉｌｏｖｅｅｒｙ</p><p>ｐａｎａｌｏｆｉｔ．Ｐｌｕｓ．ｗｅｒ．ｔｅｌｌｉｎｇｏｕｒｓｔａｒｙａｔａ</p><p>＇ｌｏｗ＿ｌａｎｇｕｑｇｅｌｅｖｅｌ．ａｎｄａｔａｎｉｎｔｅｒｎｅｄｉａ－．．</p><p>ｎｏｔｕｒｅｌｌ．ｃｒｇｕｇｅｌｅｖｅｌ．ｔｏｈｅｌｐｌｅａｒｎｅｒｓ</p><p>ｌｅｃｐｆｒｒｏｇ．ｔｈｅｎｇｅｌｌｅｓｉｍｔｏｎａｔｉｖｅｃｏｎｔｅｎｔ．</p><p>Ｂｕｔ，ｗｅｄｏｎｉｔｃｏｍｐ：ｏｍｉｓｅｃｏｎｓｔａｒｙｔｏｄｏｓｏ．</p><p>ｆｏｒｅｉｔｈｅｒｌｅｖｅｌ．Ａｎｄｔｈｉｎｇｓｉｎｔｈｅｓｔｏｒｙａｒｅ</p></div></div></div><div id="page110" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p111.jpg&quot;);"><div class="textBox" style="left:128; top:181; width:1536; height:90; font-size:32px; z-index:12;"><p>ｏｎｂｙｇｏｉｎｇｔｏｇｅｔｃｒａｚｉｅｒｆｒｏｍｈｅｒｅ．</p></div><div class="textBox" style="left:116; top:414; width:1947; height:1606; font-size:32.0px; z-index:10;"><p>Ｂｕｔｗｈａｔａｒｅｙｏｕｒｆａｖｏｒｉｔｅｐａｒｔｓｏｆｔｈｅ</p><p>ｍａｎｇａ？Ｗｅｌｏｖｅ．ｇｅｔｔｉｎｇｍａｌｉａｔＣｒｙｓｔａｌ</p><p>Ｈｕｎｔａｒｓ，ｓｏｆｔｅｌｉｒｅｅｔｏｄｒｏｐｌｅｃａｎｃｒａｌｌａｔ：</p><p>ｃｒｙｓｔａｌｈｕｍｔｅｒｓｍａｒｏｇｅｇｇｒａｉｌ．ｃｏｎ</p><p>ｏｒ＿ｌｅａｖｅｕｓａｒｒｅｖｉｅｗｏｎ－Ａｍａｚｏｎ．ａｎｄｌｅｔｕｓ</p><p>ｋｍｏｗｗ．ｗｈａｔｙｏｕｔｈｉｎｋにＷｅｌｌｄｏｏｕｒｂｅｓｔｒｏ</p><p>ｒｅｓｐｏｎｄｔｏｅｖｅｒｙｏｎｅ．ｗｈｏｗｒｉｔｅｓｔｏｕｓ．Ａｎｄ</p><p>ｄｏｎｉｔｗｏｒｒｙｃｈｏｎｔｏｎｙｓｅｎｄｉｒｇｕｓｔｈｅｔｈｉｎｇ</p><p>ｙｏｕｌｌｋｅ．Ｗｅｌｏｖｅａｌｌｋｉｎｄｓｏｆ．ｃｏｎｓｔｒｕｃｉｖｅ</p><p>・ｆｅｃｔｂｏｃｋｌ＿Ｔｆｙｏｕｒｅｅｄｐｒｏｏｆｔｈｏｔｗｅｌｌｓｒｅｎ．．．</p><p>ｔｏｏｕｒｆａｒｓ，ｗｅｄｉｔｏｒｉｇｉｎｄｌｙｉｎｔｅｎｄｏｄｏ</p><p>ａｎａｔｕｒａｌｖｅｒｓｉｏｎ．．．ＣＰｙｓｔａｌＨｕｎｔｒｅｎｓｆｏｒ．</p><p>ｉｎｔｅｒｍｅｄｉａｔｅｌｅａｎｒｅｒｓ：「Ｂｕｔ，ｈｅｒｅｉｔｉｓｔｈｏｎｋｓ</p><p>ｔｏｆａｒｄｅｍａｎｄｌ</p></div><div class="textBox" style="left:0; top:2159; width:2165; height:714; font-size:32px; z-index:11;"><p>エサｈｉｎｋｔｈａｔｓｉｔｆｏｒ．ｍｅｆｏｒｎｏｗ，ｂｕｔｂｏｆｎｅ．．．</p><p>「．．．あの、エｇｏＴｄｉｕｓｔｉｌｉｋｅｔそれですね．．．</p><p>ｆｏｒｓｕｐｐｏｒｔｉｎｇｕｓ．ａｎｄｂｅｉｎｇａｐａｒｔｏｆｏｕｒ．</p><p>でも、ここに．．．ここで、ｔｅｃｍ、Ｗｅｒｃｇｏｉｎｇｔｏｒｔ．え．．．っ。「．．．．．。ｄｏ．ｏｕｒ．ｂｅｓｔｆｏｒｋｅ」という</p><p>．．．．．．．．ｂｏｏｋｓｗｉｌｌｂｏｒｋｓｔｏｒｔｉｒｙｏｕｒ</p><p>うわー．．．うん．．ａｆｆｅｒｂｏｏｋ２！</p></div></div></div><div id="page111" class="page"><div class="pageContainer" style="width:2165; height:3051; background-image:url(&quot;CrystalHunters1/Crystal%20Hunters%20-%20Crystal%20Hunters%20%28%E8%87%AA%E7%84%B6%E3%81%AA%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%29%20%2880636366%29%20p112.jpg&quot;);"><div class="textBox" style="left:211; top:96; width:1742; height:339; font-size:32px; z-index:10;"><p>Ｊｏｉｎｕｓｆｏｒｔｈｅｎｅｘｔａｄｖｅｎｔｕｒｅ：</p><p>Ｂｏｏｋ２ｆｏｒｔｈｅｎｄｒｏｉｌＴｏｐａｎｅｓｅｖｅｒｓｉｏｎ．．．</p><p>そのため、ＧｏｏｇｌａｌｌＨｕｎｔｅｒｓｉｓａｖａｌｌａｉｇｕｘｉｌｄｂｌｅｎｏｗ！</p></div><div class="textBox" style="left:485; top:613; width:1173; height:391; font-size:32px; z-index:11;"><p>そんなことは</p></div></div></div><a id="leftAPage" href="#"></a><a id="rightAPage" href="#"></a></div><script>(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.panzoom=f()}})(function(){var define,module,exports;return function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r}()({1:[function(require,module,exports){"use strict";var wheel=require("wheel");var animate=require("amator");var eventify=require("ngraph.events");var kinetic=require("./lib/kinetic.js");var createTextSelectionInterceptor=require("./lib/createTextSelectionInterceptor.js");var domTextSelectionInterceptor=createTextSelectionInterceptor();var fakeTextSelectorInterceptor=createTextSelectionInterceptor(true);var Transform=require("./lib/transform.js");var makeSvgController=require("./lib/svgController.js");var makeDomController=require("./lib/domController.js");var defaultZoomSpeed=1;var defaultDoubleTapZoomSpeed=1.75;var doubleTapSpeedInMS=300;module.exports=createPanZoom;function createPanZoom(domElement,options){options=options||{};var panController=options.controller;if(!panController){if(makeSvgController.canAttach(domElement)){panController=makeSvgController(domElement,options)}else if(makeDomController.canAttach(domElement)){panController=makeDomController(domElement,options)}}if(!panController){throw new Error("Cannot create panzoom for the current type of dom element")}var owner=panController.getOwner();var storedCTMResult={x:0,y:0};var isDirty=false;var transform=new Transform;if(panController.initTransform){panController.initTransform(transform)}var filterKey=typeof options.filterKey==="function"?options.filterKey:noop;var pinchSpeed=typeof options.pinchSpeed==="number"?options.pinchSpeed:1;var bounds=options.bounds;var maxZoom=typeof options.maxZoom==="number"?options.maxZoom:Number.POSITIVE_INFINITY;var minZoom=typeof options.minZoom==="number"?options.minZoom:0;var boundsPadding=typeof options.boundsPadding==="number"?options.boundsPadding:.05;var zoomDoubleClickSpeed=typeof options.zoomDoubleClickSpeed==="number"?options.zoomDoubleClickSpeed:defaultDoubleTapZoomSpeed;var beforeWheel=options.beforeWheel||noop;var beforeMouseDown=options.beforeMouseDown||noop;var speed=typeof options.zoomSpeed==="number"?options.zoomSpeed:defaultZoomSpeed;var transformOrigin=parseTransformOrigin(options.transformOrigin);var textSelection=options.enableTextSelection?fakeTextSelectorInterceptor:domTextSelectionInterceptor;validateBounds(bounds);if(options.autocenter){autocenter()}var frameAnimation;var lastTouchEndTime=0;var lastSingleFingerOffset;var touchInProgress=false;var panstartFired=false;var mouseX;var mouseY;var pinchZoomLength;var smoothScroll;if("smoothScroll"in options&&!options.smoothScroll){smoothScroll=rigidScroll()}else{smoothScroll=kinetic(getPoint,scroll,options.smoothScroll)}var moveByAnimation;var zoomToAnimation;var multiTouch;var paused=false;listenForEvents();var api={dispose:dispose,moveBy:internalMoveBy,moveTo:moveTo,smoothMoveTo:smoothMoveTo,centerOn:centerOn,zoomTo:publicZoomTo,zoomAbs:zoomAbs,smoothZoom:smoothZoom,smoothZoomAbs:smoothZoomAbs,showRectangle:showRectangle,pause:pause,resume:resume,isPaused:isPaused,getTransform:getTransformModel,getMinZoom:getMinZoom,setMinZoom:setMinZoom,getMaxZoom:getMaxZoom,setMaxZoom:setMaxZoom,getTransformOrigin:getTransformOrigin,setTransformOrigin:setTransformOrigin,getZoomSpeed:getZoomSpeed,setZoomSpeed:setZoomSpeed};eventify(api);var initialX=typeof options.initialX==="number"?options.initialX:transform.x;var initialY=typeof options.initialY==="number"?options.initialY:transform.y;var initialZoom=typeof options.initialZoom==="number"?options.initialZoom:transform.scale;if(initialX!=transform.x||initialY!=transform.y||initialZoom!=transform.Scale){zoomAbs(initialX,initialY,initialZoom)}return api;function pause(){releaseEvents();paused=true}function resume(){if(paused){listenForEvents();paused=false}}function isPaused(){return paused}function showRectangle(rect){var clientRect=owner.getBoundingClientRect();var size=transformToScreen(clientRect.width,clientRect.height);var rectWidth=rect.right-rect.left;var rectHeight=rect.bottom-rect.top;if(!Number.isFinite(rectWidth)||!Number.isFinite(rectHeight)){throw new Error("Invalid rectangle")}var dw=size.x/rectWidth;var dh=size.y/rectHeight;var scale=Math.min(dw,dh);transform.x=-(rect.left+rectWidth/2)*scale+size.x/2;transform.y=-(rect.top+rectHeight/2)*scale+size.y/2;transform.scale=scale}function transformToScreen(x,y){if(panController.getScreenCTM){var parentCTM=panController.getScreenCTM();var parentScaleX=parentCTM.a;var parentScaleY=parentCTM.d;var parentOffsetX=parentCTM.e;var parentOffsetY=parentCTM.f;storedCTMResult.x=x*parentScaleX-parentOffsetX;storedCTMResult.y=y*parentScaleY-parentOffsetY}else{storedCTMResult.x=x;storedCTMResult.y=y}return storedCTMResult}function autocenter(){var w;var h;var left=0;var top=0;var sceneBoundingBox=getBoundingBox();if(sceneBoundingBox){left=sceneBoundingBox.left;top=sceneBoundingBox.top;w=sceneBoundingBox.right-sceneBoundingBox.left;h=sceneBoundingBox.bottom-sceneBoundingBox.top}else{var ownerRect=owner.getBoundingClientRect();w=ownerRect.width;h=ownerRect.height}var bbox=panController.getBBox();if(bbox.width===0||bbox.height===0){return}var dh=h/bbox.height;var dw=w/bbox.width;var scale=Math.min(dw,dh);transform.x=-(bbox.left+bbox.width/2)*scale+w/2+left;transform.y=-(bbox.top+bbox.height/2)*scale+h/2+top;transform.scale=scale}function getTransformModel(){return transform}function getMinZoom(){return minZoom}function setMinZoom(newMinZoom){minZoom=newMinZoom}function getMaxZoom(){return maxZoom}function setMaxZoom(newMaxZoom){maxZoom=newMaxZoom}function getTransformOrigin(){return transformOrigin}function setTransformOrigin(newTransformOrigin){transformOrigin=parseTransformOrigin(newTransformOrigin)}function getZoomSpeed(){return speed}function setZoomSpeed(newSpeed){if(!Number.isFinite(newSpeed)){throw new Error("Zoom speed should be a number")}speed=newSpeed}function getPoint(){return{x:transform.x,y:transform.y}}function moveTo(x,y){transform.x=x;transform.y=y;keepTransformInsideBounds();triggerEvent("pan");makeDirty()}function moveBy(dx,dy){moveTo(transform.x+dx,transform.y+dy)}function keepTransformInsideBounds(){var boundingBox=getBoundingBox();if(!boundingBox)return;var adjusted=false;var clientRect=getClientRect();var diff=boundingBox.left-clientRect.right;if(diff>0){transform.x+=diff;adjusted=true}diff=boundingBox.right-clientRect.left;if(diff<0){transform.x+=diff;adjusted=true}diff=boundingBox.top-clientRect.bottom;if(diff>0){transform.y+=diff;adjusted=true}diff=boundingBox.bottom-clientRect.top;if(diff<0){transform.y+=diff;adjusted=true}return adjusted}function getBoundingBox(){if(!bounds)return;if(typeof bounds==="boolean"){var ownerRect=owner.getBoundingClientRect();var sceneWidth=ownerRect.width;var sceneHeight=ownerRect.height;return{left:sceneWidth*boundsPadding,top:sceneHeight*boundsPadding,right:sceneWidth*(1-boundsPadding),bottom:sceneHeight*(1-boundsPadding)}}return bounds}function getClientRect(){var bbox=panController.getBBox();var leftTop=client(bbox.left,bbox.top);return{left:leftTop.x,top:leftTop.y,right:bbox.width*transform.scale+leftTop.x,bottom:bbox.height*transform.scale+leftTop.y}}function client(x,y){return{x:x*transform.scale+transform.x,y:y*transform.scale+transform.y}}function makeDirty(){isDirty=true;frameAnimation=window.requestAnimationFrame(frame)}function zoomByRatio(clientX,clientY,ratio){if(isNaN(clientX)||isNaN(clientY)||isNaN(ratio)){throw new Error("zoom requires valid numbers")}var newScale=transform.scale*ratio;if(newScale<minZoom){if(transform.scale===minZoom)return;ratio=minZoom/transform.scale}if(newScale>maxZoom){if(transform.scale===maxZoom)return;ratio=maxZoom/transform.scale}var size=transformToScreen(clientX,clientY);transform.x=size.x-ratio*(size.x-transform.x);transform.y=size.y-ratio*(size.y-transform.y);if(bounds&&boundsPadding===1&&minZoom===1){transform.scale*=ratio;keepTransformInsideBounds()}else{var transformAdjusted=keepTransformInsideBounds();if(!transformAdjusted)transform.scale*=ratio}triggerEvent("zoom");makeDirty()}function zoomAbs(clientX,clientY,zoomLevel){var ratio=zoomLevel/transform.scale;zoomByRatio(clientX,clientY,ratio)}function centerOn(ui){var parent=ui.ownerSVGElement;if(!parent)throw new Error("ui element is required to be within the scene");var clientRect=ui.getBoundingClientRect();var cx=clientRect.left+clientRect.width/2;var cy=clientRect.top+clientRect.height/2;var container=parent.getBoundingClientRect();var dx=container.width/2-cx;var dy=container.height/2-cy;internalMoveBy(dx,dy,true)}function smoothMoveTo(x,y){internalMoveBy(x-transform.x,y-transform.y,true)}function internalMoveBy(dx,dy,smooth){if(!smooth){return moveBy(dx,dy)}if(moveByAnimation)moveByAnimation.cancel();var from={x:0,y:0};var to={x:dx,y:dy};var lastX=0;var lastY=0;moveByAnimation=animate(from,to,{step:function(v){moveBy(v.x-lastX,v.y-lastY);lastX=v.x;lastY=v.y}})}function scroll(x,y){cancelZoomAnimation();moveTo(x,y)}function dispose(){releaseEvents()}function listenForEvents(){owner.addEventListener("mousedown",onMouseDown,{passive:false});owner.addEventListener("dblclick",onDoubleClick,{passive:false});owner.addEventListener("touchstart",onTouch,{passive:false});owner.addEventListener("keydown",onKeyDown,{passive:false});wheel.addWheelListener(owner,onMouseWheel,{passive:false});makeDirty()}function releaseEvents(){wheel.removeWheelListener(owner,onMouseWheel);owner.removeEventListener("mousedown",onMouseDown);owner.removeEventListener("keydown",onKeyDown);owner.removeEventListener("dblclick",onDoubleClick);owner.removeEventListener("touchstart",onTouch);if(frameAnimation){window.cancelAnimationFrame(frameAnimation);frameAnimation=0}smoothScroll.cancel();releaseDocumentMouse();releaseTouches();textSelection.release();triggerPanEnd()}function frame(){if(isDirty)applyTransform()}function applyTransform(){isDirty=false;panController.applyTransform(transform);triggerEvent("transform");frameAnimation=0}function onKeyDown(e){var x=0,y=0,z=0;if(e.keyCode===38){y=1}else if(e.keyCode===40){y=-1}else if(e.keyCode===37){x=1}else if(e.keyCode===39){x=-1}else if(e.keyCode===189||e.keyCode===109){z=1}else if(e.keyCode===187||e.keyCode===107){z=-1}if(filterKey(e,x,y,z)){return}if(x||y){e.preventDefault();e.stopPropagation();var clientRect=owner.getBoundingClientRect();var offset=Math.min(clientRect.width,clientRect.height);var moveSpeedRatio=.05;var dx=offset*moveSpeedRatio*x;var dy=offset*moveSpeedRatio*y;internalMoveBy(dx,dy)}if(z){var scaleMultiplier=getScaleMultiplier(z*100);var offset=transformOrigin?getTransformOriginOffset():midPoint();publicZoomTo(offset.x,offset.y,scaleMultiplier)}}function midPoint(){var ownerRect=owner.getBoundingClientRect();return{x:ownerRect.width/2,y:ownerRect.height/2}}function onTouch(e){beforeTouch(e);if(e.touches.length===1){return handleSingleFingerTouch(e,e.touches[0])}else if(e.touches.length===2){pinchZoomLength=getPinchZoomLength(e.touches[0],e.touches[1]);multiTouch=true;startTouchListenerIfNeeded()}}function beforeTouch(e){if(options.onTouch&&!options.onTouch(e)){return}e.stopPropagation();e.preventDefault()}function beforeDoubleClick(e){if(options.onDoubleClick&&!options.onDoubleClick(e)){return}e.preventDefault();e.stopPropagation()}function handleSingleFingerTouch(e){var touch=e.touches[0];var offset=getOffsetXY(touch);lastSingleFingerOffset=offset;var point=transformToScreen(offset.x,offset.y);mouseX=point.x;mouseY=point.y;smoothScroll.cancel();startTouchListenerIfNeeded()}function startTouchListenerIfNeeded(){if(touchInProgress){return}touchInProgress=true;document.addEventListener("touchmove",handleTouchMove);document.addEventListener("touchend",handleTouchEnd);document.addEventListener("touchcancel",handleTouchEnd)}function handleTouchMove(e){if(e.touches.length===1){e.stopPropagation();var touch=e.touches[0];var offset=getOffsetXY(touch);var point=transformToScreen(offset.x,offset.y);var dx=point.x-mouseX;var dy=point.y-mouseY;if(dx!==0&&dy!==0){triggerPanStart()}mouseX=point.x;mouseY=point.y;internalMoveBy(dx,dy)}else if(e.touches.length===2){multiTouch=true;var t1=e.touches[0];var t2=e.touches[1];var currentPinchLength=getPinchZoomLength(t1,t2);var scaleMultiplier=1+(currentPinchLength/pinchZoomLength-1)*pinchSpeed;var firstTouchPoint=getOffsetXY(t1);var secondTouchPoint=getOffsetXY(t2);mouseX=(firstTouchPoint.x+secondTouchPoint.x)/2;mouseY=(firstTouchPoint.y+secondTouchPoint.y)/2;if(transformOrigin){var offset=getTransformOriginOffset();mouseX=offset.x;mouseY=offset.y}publicZoomTo(mouseX,mouseY,scaleMultiplier);pinchZoomLength=currentPinchLength;e.stopPropagation();e.preventDefault()}}function handleTouchEnd(e){if(e.touches.length>0){var offset=getOffsetXY(e.touches[0]);var point=transformToScreen(offset.x,offset.y);mouseX=point.x;mouseY=point.y}else{var now=new Date;if(now-lastTouchEndTime<doubleTapSpeedInMS){if(transformOrigin){var offset=getTransformOriginOffset();smoothZoom(offset.x,offset.y,zoomDoubleClickSpeed)}else{smoothZoom(lastSingleFingerOffset.x,lastSingleFingerOffset.y,zoomDoubleClickSpeed)}}lastTouchEndTime=now;triggerPanEnd();releaseTouches()}}function getPinchZoomLength(finger1,finger2){var dx=finger1.clientX-finger2.clientX;var dy=finger1.clientY-finger2.clientY;return Math.sqrt(dx*dx+dy*dy)}function onDoubleClick(e){beforeDoubleClick(e);var offset=getOffsetXY(e);if(transformOrigin){offset=getTransformOriginOffset()}smoothZoom(offset.x,offset.y,zoomDoubleClickSpeed)}function onMouseDown(e){if(beforeMouseDown(e))return;if(touchInProgress){e.stopPropagation();return false}var isLeftButton=e.button===1&&window.event!==null||e.button===0;if(!isLeftButton)return;smoothScroll.cancel();var offset=getOffsetXY(e);var point=transformToScreen(offset.x,offset.y);mouseX=point.x;mouseY=point.y;document.addEventListener("mousemove",onMouseMove);document.addEventListener("mouseup",onMouseUp);textSelection.capture(e.target||e.srcElement);return false}function onMouseMove(e){if(touchInProgress)return;triggerPanStart();var offset=getOffsetXY(e);var point=transformToScreen(offset.x,offset.y);var dx=point.x-mouseX;var dy=point.y-mouseY;mouseX=point.x;mouseY=point.y;internalMoveBy(dx,dy)}function onMouseUp(){textSelection.release();triggerPanEnd();releaseDocumentMouse()}function releaseDocumentMouse(){document.removeEventListener("mousemove",onMouseMove);document.removeEventListener("mouseup",onMouseUp);panstartFired=false}function releaseTouches(){document.removeEventListener("touchmove",handleTouchMove);document.removeEventListener("touchend",handleTouchEnd);document.removeEventListener("touchcancel",handleTouchEnd);panstartFired=false;multiTouch=false;touchInProgress=false}function onMouseWheel(e){if(beforeWheel(e))return;smoothScroll.cancel();var delta=e.deltaY;if(e.deltaMode>0)delta*=100;var scaleMultiplier=getScaleMultiplier(delta);if(scaleMultiplier!==1){var offset=transformOrigin?getTransformOriginOffset():getOffsetXY(e);publicZoomTo(offset.x,offset.y,scaleMultiplier);e.preventDefault()}}function getOffsetXY(e){var offsetX,offsetY;var ownerRect=owner.getBoundingClientRect();offsetX=e.clientX-ownerRect.left;offsetY=e.clientY-ownerRect.top;return{x:offsetX,y:offsetY}}function smoothZoom(clientX,clientY,scaleMultiplier){var fromValue=transform.scale;var from={scale:fromValue};var to={scale:scaleMultiplier*fromValue};smoothScroll.cancel();cancelZoomAnimation();zoomToAnimation=animate(from,to,{step:function(v){zoomAbs(clientX,clientY,v.scale)},done:triggerZoomEnd})}function smoothZoomAbs(clientX,clientY,toScaleValue){var fromValue=transform.scale;var from={scale:fromValue};var to={scale:toScaleValue};smoothScroll.cancel();cancelZoomAnimation();zoomToAnimation=animate(from,to,{step:function(v){zoomAbs(clientX,clientY,v.scale)}})}function getTransformOriginOffset(){var ownerRect=owner.getBoundingClientRect();return{x:ownerRect.width*transformOrigin.x,y:ownerRect.height*transformOrigin.y}}function publicZoomTo(clientX,clientY,scaleMultiplier){smoothScroll.cancel();cancelZoomAnimation();return zoomByRatio(clientX,clientY,scaleMultiplier)}function cancelZoomAnimation(){if(zoomToAnimation){zoomToAnimation.cancel();zoomToAnimation=null}}function getScaleMultiplier(delta){var sign=Math.sign(delta);var deltaAdjustedSpeed=Math.min(.25,Math.abs(speed*delta/128));return 1-sign*deltaAdjustedSpeed}function triggerPanStart(){if(!panstartFired){triggerEvent("panstart");panstartFired=true;smoothScroll.start()}}function triggerPanEnd(){if(panstartFired){if(!multiTouch)smoothScroll.stop();triggerEvent("panend")}}function triggerZoomEnd(){triggerEvent("zoomend")}function triggerEvent(name){api.fire(name,api)}}function parseTransformOrigin(options){if(!options)return;if(typeof options==="object"){if(!isNumber(options.x)||!isNumber(options.y))failTransformOrigin(options);return options}failTransformOrigin()}function failTransformOrigin(options){console.error(options);throw new Error(["Cannot parse transform origin.","Some good examples:",'  "center center" can be achieved with {x: 0.5, y: 0.5}','  "top center" can be achieved with {x: 0.5, y: 0}','  "bottom right" can be achieved with {x: 1, y: 1}'].join("\n"))}function noop(){}function validateBounds(bounds){var boundsType=typeof bounds;if(boundsType==="undefined"||boundsType==="boolean")return;var validBounds=isNumber(bounds.left)&&isNumber(bounds.top)&&isNumber(bounds.bottom)&&isNumber(bounds.right);if(!validBounds)throw new Error("Bounds object is not valid. It can be: "+"undefined, boolean (true|false) or an object {left, top, right, bottom}")}function isNumber(x){return Number.isFinite(x)}function isNaN(value){if(Number.isNaN){return Number.isNaN(value)}return value!==value}function rigidScroll(){return{start:noop,stop:noop,cancel:noop}}function autoRun(){if(typeof document==="undefined")return;var scripts=document.getElementsByTagName("script");if(!scripts)return;var panzoomScript;for(var i=0;i<scripts.length;++i){var x=scripts[i];if(x.src&&x.src.match(/\bpanzoom(\.min)?\.js/)){panzoomScript=x;break}}if(!panzoomScript)return;var query=panzoomScript.getAttribute("query");if(!query)return;var globalName=panzoomScript.getAttribute("name")||"pz";var started=Date.now();tryAttach();function tryAttach(){var el=document.querySelector(query);if(!el){var now=Date.now();var elapsed=now-started;if(elapsed<2e3){setTimeout(tryAttach,100);return}console.error("Cannot find the panzoom element",globalName);return}var options=collectOptions(panzoomScript);console.log(options);window[globalName]=createPanZoom(el,options)}function collectOptions(script){var attrs=script.attributes;var options={};for(var i=0;i<attrs.length;++i){var attr=attrs[i];var nameValue=getPanzoomAttributeNameValue(attr);if(nameValue){options[nameValue.name]=nameValue.value}}return options}function getPanzoomAttributeNameValue(attr){if(!attr.name)return;var isPanZoomAttribute=attr.name[0]==="p"&&attr.name[1]==="z"&&attr.name[2]==="-";if(!isPanZoomAttribute)return;var name=attr.name.substr(3);var value=JSON.parse(attr.value);return{name:name,value:value}}}autoRun()},{"./lib/createTextSelectionInterceptor.js":2,"./lib/domController.js":3,"./lib/kinetic.js":4,"./lib/svgController.js":5,"./lib/transform.js":6,amator:7,"ngraph.events":9,wheel:10}],2:[function(require,module,exports){module.exports=createTextSelectionInterceptor;function createTextSelectionInterceptor(useFake){if(useFake){return{capture:noop,release:noop}}var dragObject;var prevSelectStart;var prevDragStart;var wasCaptured=false;return{capture:capture,release:release};function capture(domObject){wasCaptured=true;prevSelectStart=window.document.onselectstart;prevDragStart=window.document.ondragstart;window.document.onselectstart=disabled;dragObject=domObject;dragObject.ondragstart=disabled}function release(){if(!wasCaptured)return;wasCaptured=false;window.document.onselectstart=prevSelectStart;if(dragObject)dragObject.ondragstart=prevDragStart}}function disabled(e){e.stopPropagation();return false}function noop(){}},{}],3:[function(require,module,exports){module.exports=makeDomController;module.exports.canAttach=isDomElement;function makeDomController(domElement,options){var elementValid=isDomElement(domElement);if(!elementValid){throw new Error("panzoom requires DOM element to be attached to the DOM tree")}var owner=domElement.parentElement;domElement.scrollTop=0;if(!options.disableKeyboardInteraction){owner.setAttribute("tabindex",0)}var api={getBBox:getBBox,getOwner:getOwner,applyTransform:applyTransform};return api;function getOwner(){return owner}function getBBox(){return{left:0,top:0,width:domElement.clientWidth,height:domElement.clientHeight}}function applyTransform(transform){domElement.style.transformOrigin="0 0 0";domElement.style.transform="matrix("+transform.scale+", 0, 0, "+transform.scale+", "+transform.x+", "+transform.y+")"}}function isDomElement(element){return element&&element.parentElement&&element.style}},{}],4:[function(require,module,exports){module.exports=kinetic;function kinetic(getPoint,scroll,settings){if(typeof settings!=="object"){settings={}}var minVelocity=typeof settings.minVelocity==="number"?settings.minVelocity:5;var amplitude=typeof settings.amplitude==="number"?settings.amplitude:.25;var cancelAnimationFrame=typeof settings.cancelAnimationFrame==="function"?settings.cancelAnimationFrame:getCancelAnimationFrame();var requestAnimationFrame=typeof settings.requestAnimationFrame==="function"?settings.requestAnimationFrame:getRequestAnimationFrame();var lastPoint;var timestamp;var timeConstant=342;var ticker;var vx,targetX,ax;var vy,targetY,ay;var raf;return{start:start,stop:stop,cancel:dispose};function dispose(){cancelAnimationFrame(ticker);cancelAnimationFrame(raf)}function start(){lastPoint=getPoint();ax=ay=vx=vy=0;timestamp=new Date;cancelAnimationFrame(ticker);cancelAnimationFrame(raf);ticker=requestAnimationFrame(track)}function track(){var now=Date.now();var elapsed=now-timestamp;timestamp=now;var currentPoint=getPoint();var dx=currentPoint.x-lastPoint.x;var dy=currentPoint.y-lastPoint.y;lastPoint=currentPoint;var dt=1e3/(1+elapsed);vx=.8*dx*dt+.2*vx;vy=.8*dy*dt+.2*vy;ticker=requestAnimationFrame(track)}function stop(){cancelAnimationFrame(ticker);cancelAnimationFrame(raf);var currentPoint=getPoint();targetX=currentPoint.x;targetY=currentPoint.y;timestamp=Date.now();if(vx<-minVelocity||vx>minVelocity){ax=amplitude*vx;targetX+=ax}if(vy<-minVelocity||vy>minVelocity){ay=amplitude*vy;targetY+=ay}raf=requestAnimationFrame(autoScroll)}function autoScroll(){var elapsed=Date.now()-timestamp;var moving=false;var dx=0;var dy=0;if(ax){dx=-ax*Math.exp(-elapsed/timeConstant);if(dx>.5||dx<-.5)moving=true;else dx=ax=0}if(ay){dy=-ay*Math.exp(-elapsed/timeConstant);if(dy>.5||dy<-.5)moving=true;else dy=ay=0}if(moving){scroll(targetX+dx,targetY+dy);raf=requestAnimationFrame(autoScroll)}}}function getCancelAnimationFrame(){if(typeof cancelAnimationFrame==="function")return cancelAnimationFrame;return clearTimeout}function getRequestAnimationFrame(){if(typeof requestAnimationFrame==="function")return requestAnimationFrame;return function(handler){return setTimeout(handler,16)}}},{}],5:[function(require,module,exports){module.exports=makeSvgController;module.exports.canAttach=isSVGElement;function makeSvgController(svgElement,options){if(!isSVGElement(svgElement)){throw new Error("svg element is required for svg.panzoom to work")}var owner=svgElement.ownerSVGElement;if(!owner){throw new Error("Do not apply panzoom to the root <svg> element. "+"Use its child instead (e.g. <g></g>). "+"As of March 2016 only FireFox supported transform on the root element")}if(!options.disableKeyboardInteraction){owner.setAttribute("tabindex",0)}var api={getBBox:getBBox,getScreenCTM:getScreenCTM,getOwner:getOwner,applyTransform:applyTransform,initTransform:initTransform};return api;function getOwner(){return owner}function getBBox(){var bbox=svgElement.getBBox();return{left:bbox.x,top:bbox.y,width:bbox.width,height:bbox.height}}function getScreenCTM(){var ctm=owner.getCTM();if(!ctm){return owner.getScreenCTM()}return ctm}function initTransform(transform){var screenCTM=svgElement.getCTM();if(screenCTM===null){screenCTM=document.createElementNS("http://www.w3.org/2000/svg","svg").createSVGMatrix()}transform.x=screenCTM.e;transform.y=screenCTM.f;transform.scale=screenCTM.a;owner.removeAttributeNS(null,"viewBox")}function applyTransform(transform){svgElement.setAttribute("transform","matrix("+transform.scale+" 0 0 "+transform.scale+" "+transform.x+" "+transform.y+")")}}function isSVGElement(element){return element&&element.ownerSVGElement&&element.getCTM}},{}],6:[function(require,module,exports){module.exports=Transform;function Transform(){this.x=0;this.y=0;this.scale=1}},{}],7:[function(require,module,exports){var BezierEasing=require("bezier-easing");var animations={ease:BezierEasing(.25,.1,.25,1),easeIn:BezierEasing(.42,0,1,1),easeOut:BezierEasing(0,0,.58,1),easeInOut:BezierEasing(.42,0,.58,1),linear:BezierEasing(0,0,1,1)};module.exports=animate;module.exports.makeAggregateRaf=makeAggregateRaf;module.exports.sharedScheduler=makeAggregateRaf();function animate(source,target,options){var start=Object.create(null);var diff=Object.create(null);options=options||{};var easing=typeof options.easing==="function"?options.easing:animations[options.easing];if(!easing){if(options.easing){console.warn("Unknown easing function in amator: "+options.easing)}easing=animations.ease}var step=typeof options.step==="function"?options.step:noop;var done=typeof options.done==="function"?options.done:noop;var scheduler=getScheduler(options.scheduler);var keys=Object.keys(target);keys.forEach(function(key){start[key]=source[key];diff[key]=target[key]-source[key]});var durationInMs=typeof options.duration==="number"?options.duration:400;var durationInFrames=Math.max(1,durationInMs*.06);var previousAnimationId;var frame=0;previousAnimationId=scheduler.next(loop);return{cancel:cancel};function cancel(){scheduler.cancel(previousAnimationId);previousAnimationId=0}function loop(){var t=easing(frame/durationInFrames);frame+=1;setValues(t);if(frame<=durationInFrames){previousAnimationId=scheduler.next(loop);step(source)}else{previousAnimationId=0;setTimeout(function(){done(source)},0)}}function setValues(t){keys.forEach(function(key){source[key]=diff[key]*t+start[key]})}}function noop(){}function getScheduler(scheduler){if(!scheduler){var canRaf=typeof window!=="undefined"&&window.requestAnimationFrame;return canRaf?rafScheduler():timeoutScheduler()}if(typeof scheduler.next!=="function")throw new Error("Scheduler is supposed to have next(cb) function");if(typeof scheduler.cancel!=="function")throw new Error("Scheduler is supposed to have cancel(handle) function");return scheduler}function rafScheduler(){return{next:window.requestAnimationFrame.bind(window),cancel:window.cancelAnimationFrame.bind(window)}}function timeoutScheduler(){return{next:function(cb){return setTimeout(cb,1e3/60)},cancel:function(id){return clearTimeout(id)}}}function makeAggregateRaf(){var frontBuffer=new Set;var backBuffer=new Set;var frameToken=0;return{next:next,cancel:next,clearAll:clearAll};function clearAll(){frontBuffer.clear();backBuffer.clear();cancelAnimationFrame(frameToken);frameToken=0}function next(callback){backBuffer.add(callback);renderNextFrame()}function renderNextFrame(){if(!frameToken)frameToken=requestAnimationFrame(renderFrame)}function renderFrame(){frameToken=0;var t=backBuffer;backBuffer=frontBuffer;frontBuffer=t;frontBuffer.forEach(function(callback){callback()});frontBuffer.clear()}function cancel(callback){backBuffer.delete(callback)}}},{"bezier-easing":8}],8:[function(require,module,exports){var NEWTON_ITERATIONS=4;var NEWTON_MIN_SLOPE=.001;var SUBDIVISION_PRECISION=1e-7;var SUBDIVISION_MAX_ITERATIONS=10;var kSplineTableSize=11;var kSampleStepSize=1/(kSplineTableSize-1);var float32ArraySupported=typeof Float32Array==="function";function A(aA1,aA2){return 1-3*aA2+3*aA1}function B(aA1,aA2){return 3*aA2-6*aA1}function C(aA1){return 3*aA1}function calcBezier(aT,aA1,aA2){return((A(aA1,aA2)*aT+B(aA1,aA2))*aT+C(aA1))*aT}function getSlope(aT,aA1,aA2){return 3*A(aA1,aA2)*aT*aT+2*B(aA1,aA2)*aT+C(aA1)}function binarySubdivide(aX,aA,aB,mX1,mX2){var currentX,currentT,i=0;do{currentT=aA+(aB-aA)/2;currentX=calcBezier(currentT,mX1,mX2)-aX;if(currentX>0){aB=currentT}else{aA=currentT}}while(Math.abs(currentX)>SUBDIVISION_PRECISION&&++i<SUBDIVISION_MAX_ITERATIONS);return currentT}function newtonRaphsonIterate(aX,aGuessT,mX1,mX2){for(var i=0;i<NEWTON_ITERATIONS;++i){var currentSlope=getSlope(aGuessT,mX1,mX2);if(currentSlope===0){return aGuessT}var currentX=calcBezier(aGuessT,mX1,mX2)-aX;aGuessT-=currentX/currentSlope}return aGuessT}function LinearEasing(x){return x}module.exports=function bezier(mX1,mY1,mX2,mY2){if(!(0<=mX1&&mX1<=1&&0<=mX2&&mX2<=1)){throw new Error("bezier x values must be in [0, 1] range")}if(mX1===mY1&&mX2===mY2){return LinearEasing}var sampleValues=float32ArraySupported?new Float32Array(kSplineTableSize):new Array(kSplineTableSize);for(var i=0;i<kSplineTableSize;++i){sampleValues[i]=calcBezier(i*kSampleStepSize,mX1,mX2)}function getTForX(aX){var intervalStart=0;var currentSample=1;var lastSample=kSplineTableSize-1;for(;currentSample!==lastSample&&sampleValues[currentSample]<=aX;++currentSample){intervalStart+=kSampleStepSize}--currentSample;var dist=(aX-sampleValues[currentSample])/(sampleValues[currentSample+1]-sampleValues[currentSample]);var guessForT=intervalStart+dist*kSampleStepSize;var initialSlope=getSlope(guessForT,mX1,mX2);if(initialSlope>=NEWTON_MIN_SLOPE){return newtonRaphsonIterate(aX,guessForT,mX1,mX2)}else if(initialSlope===0){return guessForT}else{return binarySubdivide(aX,intervalStart,intervalStart+kSampleStepSize,mX1,mX2)}}return function BezierEasing(x){if(x===0){return 0}if(x===1){return 1}return calcBezier(getTForX(x),mY1,mY2)}}},{}],9:[function(require,module,exports){module.exports=function eventify(subject){validateSubject(subject);var eventsStorage=createEventsStorage(subject);subject.on=eventsStorage.on;subject.off=eventsStorage.off;subject.fire=eventsStorage.fire;return subject};function createEventsStorage(subject){var registeredEvents=Object.create(null);return{on:function(eventName,callback,ctx){if(typeof callback!=="function"){throw new Error("callback is expected to be a function")}var handlers=registeredEvents[eventName];if(!handlers){handlers=registeredEvents[eventName]=[]}handlers.push({callback:callback,ctx:ctx});return subject},off:function(eventName,callback){var wantToRemoveAll=typeof eventName==="undefined";if(wantToRemoveAll){registeredEvents=Object.create(null);return subject}if(registeredEvents[eventName]){var deleteAllCallbacksForEvent=typeof callback!=="function";if(deleteAllCallbacksForEvent){delete registeredEvents[eventName]}else{var callbacks=registeredEvents[eventName];for(var i=0;i<callbacks.length;++i){if(callbacks[i].callback===callback){callbacks.splice(i,1)}}}}return subject},fire:function(eventName){var callbacks=registeredEvents[eventName];if(!callbacks){return subject}var fireArguments;if(arguments.length>1){fireArguments=Array.prototype.splice.call(arguments,1)}for(var i=0;i<callbacks.length;++i){var callbackInfo=callbacks[i];callbackInfo.callback.apply(callbackInfo.ctx,fireArguments)}return subject}}}function validateSubject(subject){if(!subject){throw new Error("Eventify cannot use falsy object as events subject")}var reservedWords=["on","fire","off"];for(var i=0;i<reservedWords.length;++i){if(subject.hasOwnProperty(reservedWords[i])){throw new Error("Subject cannot be eventified, since it already has property '"+reservedWords[i]+"'")}}}},{}],10:[function(require,module,exports){module.exports=addWheelListener;module.exports.addWheelListener=addWheelListener;module.exports.removeWheelListener=removeWheelListener;function addWheelListener(element,listener,useCapture){element.addEventListener("wheel",listener,useCapture)}function removeWheelListener(element,listener,useCapture){element.removeEventListener("wheel",listener,useCapture)}},{}]},{},[1])(1)});
+</script><script>let num_pages = -1;
+let pc = document.getElementById('pagesContainer');
+let r = document.querySelector(':root');
+let pz;
+let showAboutOnStart = false;
+
+let storageKey = "mokuro_" + window.location.pathname;
+
+let defaultState = {
+    page_idx: 0,
+    page2_idx: -1,
+    hasCover: false,
+    r2l: true,
+    singlePageView: false,
+    ctrlToPan: false,
+    textBoxBorders: false,
+    editableText: false,
+    displayOCR: true,
+    fontSize: "auto",
+    eInkMode: false,
+    defaultZoomMode: "fit to screen",
+    toggleOCRTextBoxes: false,
+    backgroundColor: '#C4C3D0',
+};
+
+let state = JSON.parse(JSON.stringify(defaultState));
+
+function saveState() {
+    localStorage.setItem(storageKey, JSON.stringify(state));
+}
+
+function loadState() {
+    let newState = localStorage.getItem(storageKey)
+
+    if (newState !== null) {
+        state = JSON.parse(newState);
+    }
+
+    updateUI();
+    updateProperties();
+}
+
+function updateUI() {
+    document.getElementById("menuR2l").checked = state.r2l;
+    document.getElementById("menuCtrlToPan").checked = state.ctrlToPan;
+    document.getElementById("menuDoublePageView").checked = !state.singlePageView;
+    document.getElementById("menuHasCover").checked = state.hasCover;
+    document.getElementById("menuTextBoxBorders").checked = state.textBoxBorders;
+    document.getElementById("menuEditableText").checked = state.editableText;
+    document.getElementById("menuDisplayOCR").checked = state.displayOCR;
+    document.getElementById('menuFontSize').value = state.fontSize;
+    document.getElementById('menuEInkMode').checked = state.eInkMode;
+    document.getElementById('menuDefaultZoom').value = state.defaultZoomMode;
+    document.getElementById('menuToggleOCRTextBoxes').checked = state.toggleOCRTextBoxes;
+    document.getElementById('menuBackgroundColor').value = state.backgroundColor;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    loadState();
+    num_pages = document.getElementsByClassName("page").length;
+
+    pz = panzoom(pc, {
+        bounds: true,
+        boundsPadding: 0.05,
+        maxZoom: 10,
+        minZoom: 0.1,
+        zoomDoubleClickSpeed: 1,
+        enableTextSelection: true,
+
+        beforeMouseDown: function (e) {
+            let shouldIgnore = disablePanzoomOnElement(e.target) ||
+                (e.target.closest('.textBox') !== null) ||
+                (state.ctrlToPan && !e.ctrlKey);
+            return shouldIgnore;
+        },
+
+        beforeWheel: function (e) {
+            let shouldIgnore = disablePanzoomOnElement(e.target);
+            return shouldIgnore;
+        },
+
+        onTouch: function (e) {
+            if (disablePanzoomOnElement(e.target)) {
+                e.stopPropagation();
+                return false;
+            }
+
+            if (e.touches.length > 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+    });
+
+    updatePage(state.page_idx);
+    initTextBoxes();
+
+    if (showAboutOnStart) {
+        document.getElementById('popupAbout').style.display = 'block';
+        document.getElementById('dimOverlay').style.display = 'initial';
+        pz.pause();
+    }
+
+}, false);
+
+function disablePanzoomOnElement(element) {
+    return document.getElementById('topMenu').contains(element);
+}
+
+function initTextBoxes() {
+// Add event listeners for toggling ocr text boxes with the toggleOCRTextBoxes option.
+    let textBoxes = document.querySelectorAll('.textBox');
+    for (let i = 0; i < textBoxes.length; i++) {
+        textBoxes[i].addEventListener('click', function (e) {
+            if (state.toggleOCRTextBoxes) {
+                this.classList.add('hovered');
+                // Remove hovered state from all other .textBoxes
+                for (let j = 0; j < textBoxes.length; j++) {
+                    if (i !== j) {
+                        textBoxes[j].classList.remove('hovered');
+                    }
+                }
+            }
+        });
+    }
+// When clicking off of a .textBox, remove the hovered state.
+    document.addEventListener('click', function (e) {
+        if (state.toggleOCRTextBoxes) {
+            if (e.target.closest('.textBox') === null) {
+                let textBoxes = document.querySelectorAll('.textBox');
+                for (let i = 0; i < textBoxes.length; i++) {
+                    textBoxes[i].classList.remove('hovered');
+                }
+            }
+        }
+    });
+}
+
+function updateProperties() {
+    if (state.textBoxBorders) {
+        r.style.setProperty('--textBoxBorderHoverColor', 'rgba(237, 28, 36, 0.3)');
+    } else {
+        r.style.setProperty('--textBoxBorderHoverColor', 'rgba(0, 0, 0, 0)');
+    }
+
+    pc.contentEditable = state.editableText;
+
+    if (state.displayOCR) {
+        r.style.setProperty('--textBoxDisplay', 'initial');
+    } else {
+        r.style.setProperty('--textBoxDisplay', 'none');
+    }
+
+
+    if (state.fontSize === 'auto') {
+        pc.classList.remove('textBoxFontSizeOverride');
+    } else {
+        r.style.setProperty('--textBoxFontSize', state.fontSize + 'pt');
+        pc.classList.add('textBoxFontSizeOverride');
+    }
+
+    if (state.eInkMode) {
+        document.getElementById('topMenu').classList.add("notransition");
+    } else {
+        document.getElementById('topMenu').classList.remove("notransition");
+    }
+
+    if (state.backgroundColor) {
+        r.style.setProperty('--colorBackground', state.backgroundColor)
+    }
+}
+
+document.getElementById('menuR2l').addEventListener('click', function () {
+    state.r2l = document.getElementById("menuR2l").checked;
+    saveState();
+    updatePage(state.page_idx);
+}, false);
+
+document.getElementById('menuCtrlToPan').addEventListener('click', function () {
+    state.ctrlToPan = document.getElementById("menuCtrlToPan").checked;
+    saveState();
+}, false);
+
+document.getElementById('menuDoublePageView').addEventListener('click', function () {
+    state.singlePageView = !document.getElementById("menuDoublePageView").checked;
+    saveState();
+    updatePage(state.page_idx);
+}, false);
+
+document.getElementById('menuHasCover').addEventListener('click', function () {
+    state.hasCover = document.getElementById("menuHasCover").checked;
+    saveState();
+    updatePage(state.page_idx);
+}, false);
+
+document.getElementById('menuTextBoxBorders').addEventListener('click', function () {
+    state.textBoxBorders = document.getElementById("menuTextBoxBorders").checked;
+    saveState();
+    updateProperties();
+}, false);
+
+document.getElementById('menuEditableText').addEventListener('click', function () {
+    state.editableText = document.getElementById("menuEditableText").checked;
+    saveState();
+    updateProperties();
+}, false);
+
+document.getElementById('menuDisplayOCR').addEventListener('click', function () {
+    state.displayOCR = document.getElementById("menuDisplayOCR").checked;
+    saveState();
+    updateProperties();
+}, false);
+
+document.getElementById('menuEInkMode').addEventListener('click', function () {
+    state.eInkMode = document.getElementById("menuEInkMode").checked;
+    saveState();
+    updateProperties();
+    if (state.eInkMode) {
+        eInkRefresh();
+    }
+}, false);
+
+document.getElementById('menuToggleOCRTextBoxes').addEventListener('click', function () {
+    state.toggleOCRTextBoxes = document.getElementById("menuToggleOCRTextBoxes").checked;
+    saveState();
+    updateProperties();
+}, false);
+
+document.getElementById('menuBackgroundColor').addEventListener(
+    'input',
+    function (event) {
+      state.backgroundColor = event.target.value;
+      saveState();
+      updateProperties();
+    },
+    false
+  );
+
+document.getElementById('menuOriginalSize').addEventListener('click', zoomOriginal, false);
+document.getElementById('menuFitToWidth').addEventListener('click', zoomFitToWidth, false);
+document.getElementById('menuFitToScreen').addEventListener('click', zoomFitToScreen, false);
+document.getElementById('menuFullScreen').addEventListener('click', toggleFullScreen, false);
+
+document.getElementById('menuAbout').addEventListener('click', function () {
+    document.getElementById('popupAbout').style.display = 'block';
+    document.getElementById('dimOverlay').style.display = 'initial';
+    pz.pause();
+}, false);
+
+document.getElementById('menuReset').addEventListener('click', function () {
+    let page_idx = state.page_idx;
+    state = JSON.parse(JSON.stringify(defaultState));
+    updateUI();
+    updatePage(page_idx);
+    updateProperties();
+}, false);
+
+document.getElementById('dimOverlay').addEventListener('click', function () {
+    document.getElementById('popupAbout').style.display = 'none';
+    document.getElementById('dimOverlay').style.display = 'none';
+    pz.resume();
+}, false);
+
+document.getElementById('menuFontSize').addEventListener('change', (e) => {
+    state.fontSize = e.target.value;
+    saveState();
+    updateProperties();
+});
+
+document.getElementById('menuDefaultZoom').addEventListener('change', (e) => {
+    state.defaultZoomMode = e.target.value;
+    saveState();
+});
+
+
+document.getElementById('pageIdxInput').addEventListener('change', (e) => {
+    updatePage(e.target.value - 1);
+})
+
+document.getElementById('buttonHideMenu').addEventListener('click', function () {
+    // document.getElementById('topMenu').style.display = "none";
+    document.getElementById('showMenuA').style.display = "inline-block";
+    document.getElementById('topMenu').classList.add("hidden");
+}, false);
+
+document.getElementById('showMenuA').addEventListener('click', function () {
+    // document.getElementById('topMenu').style.display = "initial";
+    document.getElementById('showMenuA').style.display = "none";
+    document.getElementById('topMenu').classList.remove("hidden");
+}, false);
+
+document.getElementById('buttonLeftLeft').addEventListener('click', inputLeftLeft, false);
+document.getElementById('buttonLeft').addEventListener('click', inputLeft, false);
+document.getElementById('buttonRight').addEventListener('click', inputRight, false);
+document.getElementById('buttonRightRight').addEventListener('click', inputRightRight, false);
+document.getElementById('leftAPage').addEventListener('click', inputLeft, false);
+document.getElementById('leftAScreen').addEventListener('click', inputLeft, false);
+document.getElementById('rightAPage').addEventListener('click', inputRight, false);
+document.getElementById('rightAScreen').addEventListener('click', inputRight, false);
+
+document.addEventListener("keydown", function onEvent(e) {
+    switch (e.key) {
+        case "PageUp":
+            prevPage();
+            break;
+
+        case "PageDown":
+            nextPage();
+            break;
+
+        case "Home":
+            firstPage();
+            break;
+
+        case "End":
+            lastPage();
+            break;
+
+        case " ":
+            nextPage();
+            break;
+
+        case "0":
+            zoomDefault();
+            break;
+    }
+});
+
+function isPageFirstOfPair(page_idx) {
+    if (state.singlePageView) {
+        return true;
+    } else {
+        if (state.hasCover) {
+            return (page_idx === 0 || (page_idx % 2 === 1));
+        } else {
+            return page_idx % 2 === 0;
+        }
+    }
+}
+
+function getPage(page_idx) {
+    return document.getElementById("page" + page_idx);
+}
+
+function getOffsetLeft() {
+    return 0;
+}
+
+function getOffsetTop() {
+    let offset = 0;
+    let menu = document.getElementById('topMenu');
+    if (!menu.classList.contains("hidden")) {
+        offset += menu.getBoundingClientRect().bottom + 10;
+    }
+    return offset;
+}
+
+function getOffsetRight() {
+    return 0;
+}
+
+function getOffsetBottom() {
+    return 0;
+}
+
+function getScreenWidth() {
+    return window.innerWidth - getOffsetLeft() - getOffsetRight();
+}
+
+function getScreenHeight() {
+    return window.innerHeight - getOffsetTop() - getOffsetBottom();
+}
+
+function panAlign(align_x, align_y) {
+    let scale = pz.getTransform().scale;
+    let x;
+    let y;
+
+    switch (align_x) {
+        case "left":
+            x = getOffsetLeft();
+            break;
+        case "center":
+            x = getOffsetLeft() + (getScreenWidth() - pc.offsetWidth * scale) / 2;
+            break;
+        case "right":
+            x = getOffsetLeft() + (getScreenWidth() - pc.offsetWidth * scale);
+            break;
+    }
+
+    switch (align_y) {
+        case "top":
+            y = getOffsetTop();
+            break;
+        case "center":
+            y = getOffsetTop() + (getScreenHeight() - pc.offsetHeight * scale) / 2;
+            break;
+        case "bottom":
+            y = getOffsetTop() + (getScreenHeight() - pc.offsetHeight * scale);
+            break;
+    }
+
+    pz.moveTo(x, y);
+}
+
+
+function zoomOriginal() {
+    pz.moveTo(0, 0);
+    pz.zoomTo(0, 0, 1 / pz.getTransform().scale);
+    panAlign("center", "center");
+}
+
+function zoomFitToWidth() {
+    let scale = (1 / pz.getTransform().scale) * (getScreenWidth() / pc.offsetWidth);
+    pz.moveTo(0, 0);
+    pz.zoomTo(0, 0, scale);
+    panAlign("center", "top");
+}
+
+function zoomFitToScreen() {
+    let scale_x = getScreenWidth() / pc.offsetWidth;
+    let scale_y = getScreenHeight() / pc.offsetHeight;
+    let scale = (1 / pz.getTransform().scale) * Math.min(scale_x, scale_y);
+    pz.moveTo(0, 0);
+    pz.zoomTo(0, 0, scale);
+    panAlign("center", "center");
+}
+
+function zoomDefault() {
+    switch (state.defaultZoomMode) {
+        case "fit to screen":
+            zoomFitToScreen();
+            break;
+        case "fit to width":
+            zoomFitToWidth();
+            break;
+        case "original size":
+            zoomOriginal();
+            break;
+    }
+}
+
+function updatePage(new_page_idx) {
+    new_page_idx = Math.min(Math.max(new_page_idx, 0), num_pages - 1);
+
+    getPage(state.page_idx).style.display = "none";
+
+    if (state.page2_idx >= 0) {
+        getPage(state.page2_idx).style.display = "none";
+    }
+
+    if (isPageFirstOfPair(new_page_idx)) {
+        state.page_idx = new_page_idx;
+    } else {
+        state.page_idx = new_page_idx - 1;
+    }
+
+    getPage(state.page_idx).style.display = "inline-block";
+    getPage(state.page_idx).style.order = 2;
+
+    if (!state.singlePageView && state.page_idx < num_pages - 1 && !isPageFirstOfPair(state.page_idx + 1)) {
+        state.page2_idx = state.page_idx + 1;
+        getPage(state.page2_idx).style.display = "inline-block";
+
+        if (state.r2l) {
+            getPage(state.page2_idx).style.order = 1;
+        } else {
+            getPage(state.page2_idx).style.order = 3;
+        }
+
+    } else {
+        state.page2_idx = -1;
+    }
+
+    document.getElementById("pageIdxInput").value = state.page_idx + 1;
+
+    page2_txt = (state.page2_idx >= 0) ? ',' + (state.page2_idx + 1) : "";
+    document.getElementById("pageIdxDisplay").innerHTML = (state.page_idx + 1) + page2_txt + '/' + num_pages;
+
+    saveState();
+    zoomDefault();
+    if (state.eInkMode) {
+        eInkRefresh();
+    }
+}
+
+function firstPage() {
+    updatePage(0);
+}
+
+function lastPage() {
+    updatePage(num_pages - 1);
+}
+
+function prevPage() {
+    updatePage(state.page_idx - (state.singlePageView ? 1 : 2));
+}
+
+function nextPage() {
+    updatePage(state.page_idx + (state.singlePageView ? 1 : 2));
+}
+
+function inputLeftLeft() {
+    if (state.r2l) {
+        lastPage();
+    } else {
+        firstPage();
+    }
+}
+
+function inputLeft() {
+    if (state.r2l) {
+        nextPage();
+    } else {
+        prevPage();
+    }
+}
+
+function inputRight() {
+    if (state.r2l) {
+        prevPage();
+    } else {
+        nextPage();
+    }
+}
+
+function inputRightRight() {
+    if (state.r2l) {
+        firstPage();
+    } else {
+        lastPage();
+    }
+}
+
+function toggleFullScreen() {
+    var doc = window.document;
+    var docEl = doc.documentElement;
+
+    var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+    var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+    if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+        requestFullScreen.call(docEl);
+    } else {
+        cancelFullScreen.call(doc);
+    }
+}
+
+function eInkRefresh() {
+    pc.classList.add("inverted");
+    document.body.style.backgroundColor = "black";
+    setTimeout(function () {
+        pc.classList.remove("inverted");
+        document.body.style.backgroundColor = r.style.getPropertyValue("--colorBackground");
+    }, 300);
+}</script></body></html>
